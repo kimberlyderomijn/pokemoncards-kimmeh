@@ -109,13 +109,10 @@
   white-space: normal !important;
 }
 
-/* Teacher: fixed width */
-.momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-teacher {
-  flex: 0 0 auto;
-  margin: 0 16px !important;
-  width: auto !important;
-  right: auto !important;
-  text-overflow: ellipsis;
+/* Teacher: hidden (single teacher studio) */
+.momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-teacher,
+.momoyoga-schedule .momoyoga-lesson .momoyoga-lesson-teacher {
+  display: none !important;
 }
 
 /* Action/button: fixed width on the right */
@@ -154,12 +151,7 @@
   text-decoration: none !important;
 }
 
-.momoyoga-schedule .momoyoga-lesson .momoyoga-lesson-teacher,
-.momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-teacher {
-  color: #6b7d63 !important;
-  font-style: italic;
-  font-weight: 400 !important;
-}
+/* Teacher name hidden (see above) — no color styling needed */
 
 /* =============================================
    BADGES
@@ -277,54 +269,47 @@
     border-radius: 10px !important;
   }
 
-  /* Keep flexbox layout — override Momoyoga's block+relative switch */
+  /* Stack layout on mobile: time, title below, then centered button */
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line {
     display: flex !important;
-    flex-wrap: wrap !important;
+    flex-direction: column !important;
     align-items: center !important;
-    gap: 6px 0;
+    gap: 4px;
   }
 
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line > div {
     position: relative !important;
-    display: inline-block !important;
+    display: block !important;
   }
 
-  /* Row 1: Time + Title */
+  /* Time */
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-time {
-    flex: 0 0 auto;
-    margin-right: 10px;
-    font-size: 1rem !important;
+    font-size: 1.1rem !important;
+    margin-right: 0;
+    text-align: center;
+    width: 100%;
   }
 
+  /* Title below time */
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-title {
-    flex: 1 1 auto !important;
     margin: 0 !important;
     font-size: 1rem !important;
     white-space: normal !important;
+    text-align: center;
+    width: 100%;
   }
 
-  /* Row 2: Teacher + Book Now */
-  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-teacher {
-    flex: 1 1 auto;
-    margin: 0 !important;
-    margin-right: 10px !important;
-    width: auto !important;
-    right: auto !important;
-    text-align: left !important;
-  }
-
+  /* Button centered */
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-action {
-    flex: 0 0 auto;
     width: auto !important;
     right: auto !important;
-    text-align: right !important;
-    margin-left: auto;
+    text-align: center !important;
+    margin-top: 8px;
   }
 
   .momoyoga-lesson-action a,
   .momoyoga-lesson-action button {
-    padding: 7px 16px !important;
-    font-size: 0.72rem !important;
+    padding: 8px 24px !important;
+    font-size: 0.75rem !important;
   }
 }
