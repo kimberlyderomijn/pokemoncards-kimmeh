@@ -23,6 +23,17 @@ This loads MomoYoga's default schedule styling.
 4. Replace `[schedule URL here]` with your MomoYoga schedule URL (e.g., `https://www.momoyoga.com/yourstudioname`)
 5. Save and publish
 
+#### Step 3: Add custom styling (recommended)
+
+The default MomoYoga styles may clash with your Squarespace theme (e.g., white text on white backgrounds). To fix this and match the Disha Yoga site design:
+
+1. Open `momoyoga-custom-styles.css` from this repository
+2. Copy the entire contents
+3. In Squarespace, go to **Design > Custom CSS**
+4. Paste the CSS and save
+
+This gives the schedule widget a beautiful dark-green aesthetic with translucent class cards, sage-green accents, and smooth hover animations that match dishayoga.org.
+
 ### How it works
 
 - Displays your upcoming classes for the next 8 weeks (max 100 classes)
