@@ -258,23 +258,73 @@
 }
 
 /* =============================================
-   RESPONSIVE
+   RESPONSIVE — override Momoyoga defaults that
+   break the flexbox layout on mobile
    ============================================= */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .momoyoga-schedule .momoyoga-section {
-    padding: 20px 20px !important;
+    padding: 20px 24px !important;
+  }
+
+  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-title {
+    margin: 0 !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .momoyoga-schedule .momoyoga-section {
+    padding: 18px 20px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Keep flexbox layout — override Momoyoga's block+relative switch */
+  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 6px 0;
+  }
+
+  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line > div {
+    position: relative !important;
+    display: inline-block !important;
+  }
+
+  /* Row 1: Time + Title */
+  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-time {
+    flex: 0 0 auto;
+    margin-right: 10px;
+    font-size: 1rem !important;
+  }
+
+  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-title {
+    flex: 1 1 auto !important;
+    margin: 0 !important;
+    font-size: 1rem !important;
+    white-space: normal !important;
+  }
+
+  /* Row 2: Teacher + Book Now */
+  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-teacher {
+    flex: 1 1 auto;
+    margin: 0 !important;
+    margin-right: 10px !important;
+    width: auto !important;
+    right: auto !important;
+    text-align: left !important;
+  }
+
+  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-action {
+    flex: 0 0 auto;
+    width: auto !important;
+    right: auto !important;
+    text-align: right !important;
+    margin-left: auto;
   }
 
   .momoyoga-lesson-action a,
   .momoyoga-lesson-action button {
-    padding: 6px 16px !important;
-    font-size: 0.75rem !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .momoyoga-schedule .momoyoga-section {
-    padding: 16px !important;
-    border-radius: 10px !important;
+    padding: 7px 16px !important;
+    font-size: 0.72rem !important;
   }
 }
