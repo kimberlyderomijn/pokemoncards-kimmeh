@@ -1,7 +1,8 @@
 /*
   Disha Yoga — Custom MomoYoga Schedule Styling
 
-  Designed to match dishayoga.org's serene, dark-green aesthetic.
+  Designed to match dishayoga.org's earthy green aesthetic.
+  Works with the white card background from Squarespace.
 
   HOW TO USE:
   Paste this CSS into Squarespace > Design > Custom CSS
@@ -9,23 +10,13 @@
 */
 
 /* =============================================
-   BASE CONTAINER — force transparent background
-   so the dark green site background shows through
+   BASE CONTAINER
    ============================================= */
 .momoyoga-schedule {
   font-family: inherit;
   max-width: 900px;
   margin: 0 auto;
   padding: 20px 0;
-  background: transparent !important;
-}
-
-/* Remove white backgrounds from Squarespace code block wrappers */
-.sqs-block-code .sqs-block-content,
-.sqs-block-code,
-.code-block,
-.momoyoga-schedule-container {
-  background: transparent !important;
 }
 
 /* =============================================
@@ -37,41 +28,40 @@
 
 .momoyoga-day,
 .momoyoga-date {
-  color: #c8d2c0 !important;
+  color: #3d5a3a !important;
   font-size: 0.95rem !important;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-weight: 300 !important;
+  font-weight: 400 !important;
 }
 
 .momoyoga-date {
-  opacity: 0.7;
+  color: #7a8a72 !important;
 }
 
 /* =============================================
    CLASS CARDS
    ============================================= */
 .momoyoga-lesson {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: #f7f9f5 !important;
+  border: 1px solid #d6dfd0 !important;
   border-radius: 12px !important;
   margin-bottom: 10px !important;
   padding: 18px 24px !important;
   transition: all 0.3s ease !important;
   cursor: pointer;
-  backdrop-filter: blur(4px);
 }
 
 .momoyoga-lesson:hover {
-  background: rgba(255, 255, 255, 0.12) !important;
-  border-color: rgba(200, 210, 192, 0.3) !important;
+  background: #eef3ea !important;
+  border-color: #a8c090 !important;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(61, 90, 58, 0.12);
 }
 
 /* Event/special class highlight */
 .momoyoga-lesson.momoyoga-event {
-  border-left: 3px solid #a8c090 !important;
+  border-left: 3px solid #3d5a3a !important;
 }
 
 /* Cancelled class */
@@ -83,18 +73,18 @@
    CLASS DETAILS TEXT
    ============================================= */
 .momoyoga-lesson-line {
-  color: #f0f0eb !important;
+  color: #2c2c2c !important;
 }
 
 .momoyoga-lesson-time {
-  color: #a8c090 !important;
+  color: #3d5a3a !important;
   font-weight: 600 !important;
   font-size: 1.1rem !important;
 }
 
 .momoyoga-lesson-title,
 .momoyoga-lesson-title a {
-  color: #ffffff !important;
+  color: #2c2c2c !important;
   font-size: 1.15rem !important;
   font-weight: 500 !important;
   letter-spacing: 0.3px;
@@ -104,10 +94,11 @@
   border-radius: 0 !important;
   text-transform: none !important;
   display: inline !important;
+  text-decoration: none !important;
 }
 
 .momoyoga-lesson-teacher {
-  color: #c8d2c0 !important;
+  color: #6b7d63 !important;
   font-style: italic;
   font-weight: 300 !important;
   font-size: 0.9rem !important;
@@ -117,19 +108,19 @@
    BADGES
    ============================================= */
 .momoyoga-lesson-badge {
-  background: rgba(168, 192, 144, 0.2) !important;
-  color: #a8c090 !important;
+  background: #eef3ea !important;
+  color: #3d5a3a !important;
   border-radius: 20px !important;
   padding: 3px 12px !important;
   font-size: 0.75rem !important;
   text-transform: uppercase;
   letter-spacing: 1px;
-  border: 1px solid rgba(168, 192, 144, 0.3) !important;
+  border: 1px solid #d6dfd0 !important;
 }
 
 .momoyoga-lesson-badge-online {
-  background: rgba(168, 192, 144, 0.25) !important;
-  color: #a8c090 !important;
+  background: #eef3ea !important;
+  color: #3d5a3a !important;
 }
 
 /* =============================================
@@ -137,8 +128,8 @@
    ============================================= */
 .momoyoga-lesson-action a,
 .momoyoga-lesson-action button {
-  background: #a8c090 !important;
-  color: #2a3c25 !important;
+  background: #3d5a3a !important;
+  color: #ffffff !important;
   border: none !important;
   border-radius: 25px !important;
   padding: 10px 28px !important;
@@ -153,9 +144,9 @@
 
 .momoyoga-lesson-action a:hover,
 .momoyoga-lesson-action button:hover {
-  background: #bdd4a8 !important;
-  color: #1e2e1a !important;
-  box-shadow: 0 4px 16px rgba(168, 192, 144, 0.3) !important;
+  background: #4a6f46 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(61, 90, 58, 0.3) !important;
   transform: translateY(-1px);
 }
 
@@ -163,8 +154,8 @@
    EXPANDED DETAILS
    ============================================= */
 .momoyoga-lesson-details {
-  color: #d4d9cf !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #4a4a4a !important;
+  border-top: 1px solid #d6dfd0 !important;
   margin-top: 14px !important;
   padding-top: 14px !important;
   font-size: 0.95rem !important;
@@ -172,21 +163,21 @@
 }
 
 .momoyoga-lesson-description {
-  color: #d4d9cf !important;
+  color: #4a4a4a !important;
 }
 
 .momoyoga-lesson-link a {
-  color: #a8c090 !important;
+  color: #3d5a3a !important;
   text-decoration: underline !important;
   text-underline-offset: 3px;
 }
 
 .momoyoga-lesson-link a:hover {
-  color: #bdd4a8 !important;
+  color: #4a6f46 !important;
 }
 
 /* =============================================
-   GENERAL LINKS & TEXT OVERRIDES
+   GENERAL OVERRIDES
    ============================================= */
 .momoyoga-schedule,
 .momoyoga-schedule * {
@@ -194,13 +185,13 @@
 }
 
 .momoyoga-schedule a {
-  color: #a8c090 !important;
+  color: #3d5a3a !important;
   text-decoration: none !important;
   transition: color 0.2s ease;
 }
 
 .momoyoga-schedule a:hover {
-  color: #bdd4a8 !important;
+  color: #4a6f46 !important;
 }
 
 /* =============================================
@@ -232,7 +223,8 @@
     font-size: 1rem !important;
   }
 
-  .momoyoga-lesson-title {
+  .momoyoga-lesson-title,
+  .momoyoga-lesson-title a {
     font-size: 1rem !important;
   }
 }
