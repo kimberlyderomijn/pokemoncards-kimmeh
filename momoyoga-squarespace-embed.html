@@ -1,0 +1,26 @@
+<!--
+  MomoYoga Schedule Integration for Squarespace
+
+  INSTRUCTIONS:
+  1. Log into your Squarespace account and go to Pages
+  2. Open the page where you want to add the yoga schedule
+  3. Add a Code Block (requires Business or Commerce plan)
+  4. Make sure "HTML" is selected in the dropdown
+  5. Paste the code below into the Code Block
+  6. Replace [schedule URL here] with your MomoYoga schedule URL
+     (e.g., https://www.momoyoga.com/yourstudioname)
+  7. Save and publish
+
+  OPTIONAL: For MomoYoga's default styling, also add the stylesheet link
+  in Page Settings > Advanced (see momoyoga-squarespace-header.html)
+
+  NOTE: The schedule displays classes for the upcoming 8 weeks
+  (max 100 classes). Clicking "Book now" redirects visitors to MomoYoga.
+-->
+
+<!-- MomoYoga Schedule Container -->
+<div class="momoyoga-schedule" data-momo-schedule="[schedule URL here]"></div>
+
+<!-- MomoYoga Schedule Scripts -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://www.momoyoga.com/schedule-plugin/v2/js/schedule.js" crossorigin="anonymous"></script>
