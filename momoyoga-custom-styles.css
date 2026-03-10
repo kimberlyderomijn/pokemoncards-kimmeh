@@ -300,10 +300,10 @@
     display: block !important;
   }
 
-  /* Button: right side, spans both rows, vertically centered */
+  /* Button: right side, on the title row, vertically centered */
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-action {
     grid-column: 2 !important;
-    grid-row: 1 / 3 !important;
+    grid-row: 2 !important;
     width: auto !important;
     right: auto !important;
     display: flex !important;
