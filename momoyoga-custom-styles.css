@@ -269,43 +269,48 @@
     border-radius: 10px !important;
   }
 
-  /* Stack: time, title below it (left-aligned), button centered */
+  /* Two-column: text left, button right vertically centered */
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line {
     display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 2px;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 0;
   }
 
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line > div {
     position: relative !important;
+  }
+
+  /* Time: full width so title wraps below it */
+  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-time {
+    flex: 1 1 60% !important;
+    font-size: 1.05rem !important;
+    margin-right: 0;
     display: block !important;
   }
 
-  /* Time: left-aligned */
-  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-time {
-    font-size: 1.05rem !important;
-    margin-right: 0;
+  /* Button: right side, vertically centered with text */
+  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-action {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    right: auto !important;
+    text-align: right !important;
+    margin-left: auto;
   }
 
-  /* Title: left-aligned, below time */
+  /* Title: below time, takes full remaining width */
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-title {
-    margin: 0 !important;
+    flex: 1 1 60% !important;
+    margin: 2px 0 0 0 !important;
     font-size: 1rem !important;
     white-space: normal !important;
-  }
-
-  /* Button: centered, full width container */
-  .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-action {
-    width: 100% !important;
-    right: auto !important;
-    text-align: center !important;
-    margin-top: 10px;
+    order: 3;
   }
 
   .momoyoga-lesson-action a,
   .momoyoga-lesson-action button {
-    padding: 8px 24px !important;
-    font-size: 0.75rem !important;
+    padding: 8px 20px !important;
+    font-size: 0.72rem !important;
   }
 }
