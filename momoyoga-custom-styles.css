@@ -40,7 +40,7 @@
   background-color: #ffffff !important;
   border: 1px solid #e0e8db !important;
   border-radius: 14px !important;
-  padding: 28px 30px !important;
+  padding: 28px 36px !important;
   margin: 0 0 20px !important;
   box-shadow: 0 2px 12px rgba(61, 90, 58, 0.06);
 }
@@ -79,6 +79,51 @@
   background: none !important;
   transform: none;
   box-shadow: none;
+}
+
+/* Vertically center all items in the lesson row */
+.momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line {
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+  min-height: 40px;
+}
+
+.momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line > div {
+  position: relative !important;
+  top: auto !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
+/* Time: fixed width on the left */
+.momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-time {
+  flex: 0 0 auto;
+  margin-right: 12px;
+}
+
+/* Title: takes up available space */
+.momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-title {
+  flex: 1 1 auto !important;
+  margin: 0 !important;
+  white-space: normal !important;
+}
+
+/* Teacher: fixed width */
+.momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-teacher {
+  flex: 0 0 auto;
+  margin: 0 16px !important;
+  width: auto !important;
+  right: auto !important;
+  text-overflow: ellipsis;
+}
+
+/* Action/button: fixed width on the right */
+.momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-action {
+  flex: 0 0 auto;
+  width: auto !important;
+  right: auto !important;
+  text-align: right !important;
 }
 
 /* =============================================
