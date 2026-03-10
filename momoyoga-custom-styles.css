@@ -9,13 +9,23 @@
 */
 
 /* =============================================
-   BASE CONTAINER
+   BASE CONTAINER — force transparent background
+   so the dark green site background shows through
    ============================================= */
 .momoyoga-schedule {
   font-family: inherit;
   max-width: 900px;
   margin: 0 auto;
   padding: 20px 0;
+  background: transparent !important;
+}
+
+/* Remove white backgrounds from Squarespace code block wrappers */
+.sqs-block-code .sqs-block-content,
+.sqs-block-code,
+.code-block,
+.momoyoga-schedule-container {
+  background: transparent !important;
 }
 
 /* =============================================
@@ -82,11 +92,18 @@
   font-size: 1.1rem !important;
 }
 
-.momoyoga-lesson-title {
+.momoyoga-lesson-title,
+.momoyoga-lesson-title a {
   color: #ffffff !important;
   font-size: 1.15rem !important;
   font-weight: 500 !important;
   letter-spacing: 0.3px;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  text-transform: none !important;
+  display: inline !important;
 }
 
 .momoyoga-lesson-teacher {
@@ -119,8 +136,7 @@
    BOOK NOW BUTTON
    ============================================= */
 .momoyoga-lesson-action a,
-.momoyoga-lesson-action button,
-.momoyoga-lesson a[href] {
+.momoyoga-lesson-action button {
   background: #a8c090 !important;
   color: #2a3c25 !important;
   border: none !important;
@@ -136,8 +152,7 @@
 }
 
 .momoyoga-lesson-action a:hover,
-.momoyoga-lesson-action button:hover,
-.momoyoga-lesson a[href]:hover {
+.momoyoga-lesson-action button:hover {
   background: #bdd4a8 !important;
   color: #1e2e1a !important;
   box-shadow: 0 4px 16px rgba(168, 192, 144, 0.3) !important;
