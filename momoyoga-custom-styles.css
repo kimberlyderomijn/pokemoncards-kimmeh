@@ -50,6 +50,7 @@
   padding: 18px 24px !important;
   transition: all 0.3s ease !important;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .momoyoga-lesson:hover {
@@ -124,30 +125,45 @@
 }
 
 /* =============================================
-   BOOK NOW BUTTON
+   BOOK NOW BUTTON — use every possible selector
+   to beat Squarespace specificity
    ============================================= */
+.momoyoga-schedule .momoyoga-lesson .momoyoga-lesson-action a,
+.momoyoga-schedule .momoyoga-lesson .momoyoga-lesson-action button,
+.momoyoga-schedule .momoyoga-lesson-action a,
+.momoyoga-schedule .momoyoga-lesson-action button,
 .momoyoga-lesson-action a,
 .momoyoga-lesson-action button {
-  background: #3d5a3a !important;
+  background-color: #3d5a3a !important;
   color: #ffffff !important;
   border: none !important;
   border-radius: 25px !important;
-  padding: 10px 28px !important;
-  font-size: 0.85rem !important;
+  padding: 8px 22px !important;
+  font-size: 0.8rem !important;
   font-weight: 600 !important;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   text-decoration: none !important;
   transition: all 0.3s ease !important;
   display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Force white text on all child elements inside the button */
+.momoyoga-lesson-action a *,
+.momoyoga-lesson-action button *,
+.momoyoga-lesson-action a span,
+.momoyoga-lesson-action button span {
+  color: #ffffff !important;
 }
 
 .momoyoga-lesson-action a:hover,
 .momoyoga-lesson-action button:hover {
-  background: #4a6f46 !important;
+  background-color: #4a6f46 !important;
   color: #ffffff !important;
   box-shadow: 0 4px 16px rgba(61, 90, 58, 0.3) !important;
-  transform: translateY(-1px);
 }
 
 /* =============================================
