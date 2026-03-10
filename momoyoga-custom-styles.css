@@ -269,12 +269,12 @@
     border-radius: 10px !important;
   }
 
-  /* Stack layout on mobile: time, title below, then centered button */
+  /* Stack: time, title below it (left-aligned), button centered */
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line {
     display: flex !important;
     flex-direction: column !important;
-    align-items: center !important;
-    gap: 4px;
+    align-items: flex-start !important;
+    gap: 2px;
   }
 
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line > div {
@@ -282,29 +282,25 @@
     display: block !important;
   }
 
-  /* Time */
+  /* Time: left-aligned */
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-time {
-    font-size: 1.1rem !important;
+    font-size: 1.05rem !important;
     margin-right: 0;
-    text-align: center;
-    width: 100%;
   }
 
-  /* Title below time */
+  /* Title: left-aligned, below time */
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-title {
     margin: 0 !important;
     font-size: 1rem !important;
     white-space: normal !important;
-    text-align: center;
-    width: 100%;
   }
 
-  /* Button centered */
+  /* Button: centered, full width container */
   .momoyoga-schedule .momoyoga-lesson > .momoyoga-lesson-line .momoyoga-lesson-action {
-    width: auto !important;
+    width: 100% !important;
     right: auto !important;
     text-align: center !important;
-    margin-top: 8px;
+    margin-top: 10px;
   }
 
   .momoyoga-lesson-action a,
