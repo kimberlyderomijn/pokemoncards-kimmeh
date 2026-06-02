@@ -1,0 +1,417 @@
+/* ============================================================
+   MEMTCG — Mijn account / Dashboard — v1.1
+   ============================================================
+   Plak ACHTER global v1.1 in:
+   Elementor → Site Settings → Custom CSS
+   Werkt op: /mijn-account/ (WooCommerce + WoodMart dashboard)
+
+   Kaart-stijl (gradient #1a1a1a→#232323 + zachte rand + 12px
+   radius) is identiek aan de winkelwagen/afrekenen/contact-kaarten.
+
+   STRUCTUUR
+   1. Layout            — sidebar + content uitlijning
+   2. Sidebar kaart     — wrapper + 'Mijn account'-titel (eyebrow)
+   3. Navigatie links   — hover + actieve accent-pill + logout
+   4. Welkomst-kaart    — de 2 dashboard-paragrafen worden 1 kaart
+                          (alleen dashboard, gescoped via :has())
+   5. Icoon-grid        — kaarten + accent icon-chip + hover-lift
+   6. Accountdetails    — wachtwoord-fieldset → kaart
+   7. Adressen          — Factuur- & Verzendadres als kaarten
+   8. Mobiel
+   ============================================================ */
+
+
+/* ===========================================================
+   1. LAYOUT
+   =========================================================== */
+.wd-my-account-wrapper {
+    align-items: start !important;
+}
+
+
+/* ===========================================================
+   2. SIDEBAR KAART
+   =========================================================== */
+.wd-my-account-sidebar {
+    padding: 8px;
+    background: var(--bg-card, linear-gradient(135deg, #1a1a1a 0%, #232323 100%));
+    border: 1px solid var(--c-line, rgba(255,255,255,0.08));
+    border-radius: var(--r-lg, 12px);
+}
+
+/* 'Mijn account'-titel → kleine eyebrow */
+.wd-my-account-sidebar .woocommerce-MyAccount-title,
+.wd-my-account-sidebar h3.entry-title {
+    margin: 0 !important;
+    padding: 14px 16px 10px !important;
+    font-family: var(--font-display, 'Poppins', sans-serif) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    color: var(--c-text-muted, rgba(255,255,255,0.55)) !important;
+}
+
+
+/* ===========================================================
+   3. NAVIGATIE LINKS
+   =========================================================== */
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation ul,
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li a {
+    display: block;
+    padding: 12px 16px !important;
+    border-radius: var(--r-md, 8px) !important;
+    font-family: var(--font-body, 'Roboto', sans-serif) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: var(--c-text, rgba(255,255,255,0.78)) !important;
+    text-decoration: none !important;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li a:hover {
+    background: var(--c-line-soft, rgba(255,255,255,0.04));
+    color: var(--c-text-strong, #FFFFFF) !important;
+}
+
+/* Actieve link → volle accent-pill */
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li.is-active a {
+    background: var(--c-accent, #2596BE) !important;
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+}
+
+/* Logout subtiel apart, rood op hover */
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li.woocommerce-MyAccount-navigation-link--customer-logout a {
+    color: var(--c-text-muted, rgba(255,255,255,0.55)) !important;
+}
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li.woocommerce-MyAccount-navigation-link--customer-logout a:hover {
+    background: rgba(245,134,133,0.10);
+    color: var(--c-error, #F58685) !important;
+}
+
+
+/* ===========================================================
+   4. WELKOMST-KAART  (alleen dashboard)
+   ===========================================================
+   De twee dashboard-paragrafen worden visueel één kaart:
+   - p1 = bovenkant (afgerond boven) met de begroeting
+   - p2 = onderkant (afgerond onder) met de uitleg
+   Gescoped met :has(.wd-my-account-links) zodat alleen de
+   dashboard-pagina geraakt wordt — niet orders/edit-account.
+   =========================================================== */
+
+/* Gedeelde kaart-zijkanten voor beide paragrafen */
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p:first-of-type,
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p:last-of-type {
+    margin: 0 !important;
+    padding-left: 26px !important;
+    padding-right: 26px !important;
+    background: var(--bg-card, linear-gradient(135deg, #1a1a1a 0%, #232323 100%));
+    border-left: 1px solid var(--c-line, rgba(255,255,255,0.08));
+    border-right: 1px solid var(--c-line, rgba(255,255,255,0.08));
+    font-family: var(--font-body, 'Roboto', sans-serif);
+    line-height: 1.6;
+}
+
+/* p1 — bovenkant + begroeting */
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p:first-of-type {
+    padding-top: 24px !important;
+    padding-bottom: 12px !important;
+    border-top: 1px solid var(--c-line, rgba(255,255,255,0.08));
+    border-radius: var(--r-lg, 12px) var(--r-lg, 12px) 0 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-text, rgba(255,255,255,0.78));
+}
+/* Naam oplichten (eerste <strong>) */
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p:first-of-type strong:first-of-type {
+    font-family: var(--font-display, 'Poppins', sans-serif);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--c-text-strong, #FFFFFF);
+}
+
+/* p2 — onderkant + uitleg */
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p:last-of-type {
+    padding-top: 0 !important;
+    padding-bottom: 24px !important;
+    border-bottom: 1px solid var(--c-line, rgba(255,255,255,0.08));
+    border-radius: 0 0 var(--r-lg, 12px) var(--r-lg, 12px);
+    font-size: 14px;
+    color: var(--c-text-muted, rgba(255,255,255,0.55));
+}
+
+/* Links binnen de kaart */
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p a {
+    color: var(--c-accent, #2596BE);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p a:hover {
+    color: var(--c-accent-soft, #74B6D2);
+}
+
+
+/* ===========================================================
+   5. DASHBOARD ICOON-GRID
+   =========================================================== */
+.wd-my-account-links.wd-nav-my-acc {
+    list-style: none !important;
+    margin: 28px 0 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 14px !important;
+}
+
+/* Verberg de (huidige) dashboard-tegel → nette 3×2 */
+.wd-my-account-links.wd-nav-my-acc > li.wd-my-acc-dashboard {
+    display: none !important;
+}
+
+.wd-my-account-links.wd-nav-my-acc > li {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.wd-my-account-links.wd-nav-my-acc > li > a {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 30px 16px !important;
+    background: var(--bg-card, linear-gradient(135deg, #1a1a1a 0%, #232323 100%));
+    border: 1px solid var(--c-line, rgba(255,255,255,0.08)) !important;
+    border-radius: var(--r-lg, 12px) !important;
+    text-align: center;
+    text-decoration: none !important;
+    color: var(--c-text, rgba(255,255,255,0.78)) !important;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Icon-chip met WoodMart-glyph */
+.wd-my-account-links.wd-nav-my-acc > li > a .wd-nav-icon {
+    display: grid !important;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    margin: 0 !important;
+    border-radius: var(--r-md, 8px);
+    background: var(--c-accent-tint, rgba(37,150,190,0.12));
+    transition: background 0.15s ease;
+}
+.wd-my-account-links.wd-nav-my-acc > li > a .wd-nav-icon::before {
+    font-size: 24px !important;
+    line-height: 1 !important;
+    color: var(--c-accent, #2596BE) !important;
+}
+
+/* Label */
+.wd-my-account-links.wd-nav-my-acc > li > a .nav-link-text {
+    font-family: var(--font-display, 'Poppins', sans-serif) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.2px;
+    color: var(--c-text-strong, #FFFFFF) !important;
+}
+
+/* Hover — lift + accent-rand + schaduw */
+.wd-my-account-links.wd-nav-my-acc > li > a:hover {
+    border-color: var(--c-accent-line, rgba(37,150,190,0.40)) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.45);
+}
+.wd-my-account-links.wd-nav-my-acc > li > a:hover .wd-nav-icon {
+    background: rgba(37,150,190,0.22);
+}
+
+
+/* ===========================================================
+   6. ACCOUNTDETAILS — wachtwoord-fieldset → kaart
+   ===========================================================
+   De default <fieldset>-rand (grijze streep met de legend
+   er dwars doorheen) past niet in het thema. We maken er een
+   nette kaart van — zelfde gradient/rand/radius als de rest —
+   met de legend 'Wachtwoordwijziging' als kop.
+   =========================================================== */
+.woocommerce-EditAccountForm fieldset,
+form.edit-account fieldset {
+    margin: 28px 0 !important;
+    padding: 28px 26px 26px !important;
+    display: flow-root;
+    background: var(--bg-card, linear-gradient(135deg, #1a1a1a 0%, #232323 100%));
+    border: 1px solid var(--c-line, rgba(255,255,255,0.08)) !important;
+    border-radius: var(--r-lg, 12px) !important;
+}
+.woocommerce-EditAccountForm fieldset legend,
+form.edit-account fieldset legend {
+    float: left !important;
+    width: 100% !important;
+    margin: 0 0 20px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    font-family: var(--font-display, 'Poppins', sans-serif) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    color: var(--c-text-strong, #FFFFFF) !important;
+}
+/* eerste veld netjes onder de gefloate legend */
+.woocommerce-EditAccountForm fieldset legend + .form-row,
+.woocommerce-EditAccountForm fieldset legend + p,
+form.edit-account fieldset legend + .form-row,
+form.edit-account fieldset legend + p {
+    clear: both;
+}
+/* laatste veld zonder onderspatie zodat de kaart-padding klopt */
+.woocommerce-EditAccountForm fieldset .form-row:last-child,
+form.edit-account fieldset .form-row:last-child {
+    margin-bottom: 0 !important;
+}
+
+
+/* ===========================================================
+   7. ADRESSEN — Factuur- & Verzendadres als kaarten
+   ===========================================================
+   Markup: .woocommerce-Addresses.col2-set met 2x
+   .woocommerce-Address (header.title > h2 + a.edit, daarna
+   <address>). De bewerk-link houdt zijn woodmart-font pencil
+   (::before) — we kleuren/positioneren 'm alleen.
+   =========================================================== */
+
+/* intro-tekst boven de kaarten */
+.woocommerce-MyAccount-content:has(.woocommerce-Addresses) > p:first-of-type {
+    margin: 0 0 24px !important;
+    color: var(--c-text-muted, rgba(255,255,255,0.55));
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* 2-koloms grid (vervangt WooCommerce col2-set floats) */
+.woocommerce-Addresses {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+    width: 100% !important;
+    margin: 8px 0 0 !important;
+}
+.woocommerce-Addresses .u-column1,
+.woocommerce-Addresses .u-column2,
+.woocommerce-Addresses .col-1,
+.woocommerce-Addresses .col-2 {
+    float: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* de kaart — flex-kolom (nodig voor de volgorde) maar zonder vaste hoogte:
+   de kaart hugt z'n inhoud, net als de welkomst- en wachtwoord-kaart */
+.woocommerce-Address {
+    display: flex !important;
+    flex-direction: column;
+    padding: 28px 26px !important;
+    background: var(--bg-card, linear-gradient(135deg, #1a1a1a 0%, #232323 100%));
+    border: 1px solid var(--c-line, rgba(255,255,255,0.08));
+    border-radius: var(--r-lg, 12px);
+}
+
+/* de header lost zich op (display:contents) zodat <h2> en <a.edit> losse
+   items worden — zo staan ze in nette volgorde: titel → adres → actie. */
+.woocommerce-Address .woocommerce-Address-title.title {
+    display: contents !important;
+}
+
+/* titel — kaartkop in wit, net als de wachtwoord-kaart */
+.woocommerce-Address .woocommerce-Address-title.title h2,
+.woocommerce-Address .woocommerce-Address-title.title h3 {
+    order: 0;
+    margin: 0 0 18px !important;
+    padding: 0 !important;
+    font-family: var(--font-display, 'Poppins', sans-serif) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    color: var(--c-text-strong, #FFFFFF) !important;
+}
+
+/* adres — de inhoud */
+.woocommerce-Address address {
+    order: 1;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    font-family: var(--font-body, 'Roboto', sans-serif) !important;
+    font-style: normal !important;
+    font-size: 15px !important;
+    line-height: 1.85 !important;
+    color: var(--c-text, rgba(255,255,255,0.78)) !important;
+}
+
+/* bewerk-/toevoeg-link — actie direct onder het adres (pencil via
+   woodmart-font ::before, kleurt mee met de accent-kleur) */
+.woocommerce-Address .woocommerce-Address-title.title a.edit {
+    order: 2;
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    white-space: nowrap;
+    margin: 20px 0 0 !important;
+    padding: 0 !important;
+    color: var(--c-accent, #2596BE) !important;
+    font-family: var(--font-body, 'Roboto', sans-serif) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: color 0.15s ease;
+}
+.woocommerce-Address .woocommerce-Address-title.title a.edit:hover {
+    color: var(--c-accent-soft, #74B6D2) !important;
+}
+
+
+/* ===========================================================
+   8. MOBIEL
+   =========================================================== */
+@media (max-width: 768.98px) {
+    .wd-my-account-links.wd-nav-my-acc {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+    .wd-my-account-links.wd-nav-my-acc > li > a {
+        padding: 22px 12px !important;
+        gap: 10px;
+    }
+    .wd-my-account-links.wd-nav-my-acc > li > a .wd-nav-icon {
+        width: 46px;
+        height: 46px;
+    }
+    .woocommerce-MyAccount-content:has(.wd-my-account-links) > p:first-of-type,
+    .woocommerce-MyAccount-content:has(.wd-my-account-links) > p:last-of-type {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+    .woocommerce-EditAccountForm fieldset,
+    form.edit-account fieldset {
+        margin: 24px 0 !important;
+        padding: 22px 18px 20px !important;
+    }
+    .woocommerce-Addresses {
+        grid-template-columns: 1fr !important;
+        gap: 14px;
+    }
+    .woocommerce-Address {
+        padding: 20px !important;
+    }
+}
