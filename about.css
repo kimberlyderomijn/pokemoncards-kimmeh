@@ -1,0 +1,432 @@
+/* ============================================
+   MEMTCG About Page — v4.1
+   ============================================ */
+
+
+/* ===========================================================
+   0. PAGE SETUP — Woodmart page-title bar verbergen
+   ===========================================================
+   Selector uit DOM-dump: <div class="wd-page-title page-title ...">
+   Scope op body.page-id-30342 zodat andere pagina's onaangetast.
+*/
+
+body.page-id-30342 .wd-page-title.page-title {
+    display: none;
+}
+
+
+/* ===========================================================
+   1. PAGE WRAPPER
+   =========================================================== */
+
+.about-page {
+    max-width: 1080px;
+    margin: 0 auto;
+    color: var(--c-text);
+    font-family: var(--font-body);
+}
+
+.about-page .about-readable {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+
+/* ===========================================================
+   2. EYEBROW
+   =========================================================== */
+
+.about-page .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--c-accent-soft);
+    margin-bottom: 14px;
+}
+.about-page .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 22px;
+    height: 1px;
+    background: var(--c-accent-line);
+}
+.about-page .eyebrow--center {
+    justify-content: center;
+}
+.about-page .eyebrow--center::before {
+    display: none;
+}
+
+
+/* ===========================================================
+   3. SECTION 1 — INTRO
+   ===========================================================
+   Soft blue glow met percentage-based ellipse — fade-out is
+   afgerond vóór container-edge zodat geen visuele cut-off.
+*/
+
+.about-page .about-intro {
+    position: relative;
+    padding: 32px 0 48px;
+}
+
+.about-page .about-intro::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 55% 75% at 50% 55%,
+        rgba(37,150,190,0.20) 0%,
+        rgba(37,150,190,0.08) 35%,
+        rgba(37,150,190,0.02) 60%,
+        transparent 85%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.about-page .about-intro > * {
+    position: relative;
+    z-index: 1;
+}
+
+.about-page .about-intro h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(26px, 3.6vw, 40px);
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+    color: var(--c-text-strong);
+    margin: 0 0 20px;
+}
+
+.about-page .about-intro .lead {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--c-text);
+    margin: 0;
+}
+
+
+/* ===========================================================
+   4. SECTION 2 — FOTO STRIP (Elementor image widgets)
+   ===========================================================
+   DOM-bevinding: class .memtcg-about-photos staat op de image
+   widgets zelf (div.elementor-widget-image), niet op de section.
+
+   Strategy:
+   - Widget-styling: directe class selector (klasse staat op widget)
+   - Section/container/column: :has() selector vanuit widget upwards
+
+   Browser note: :has() is 91%+ supported sinds 2023.
+*/
+
+/* Section padding — vind de section die onze widgets bevat */
+.elementor-section:has(.memtcg-about-photos) {
+    padding: 16px 0 40px;
+}
+
+/* Container = 3-koloms grid binnen 1080px */
+.elementor-section:has(.memtcg-about-photos) > .elementor-container {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+/* Elementor's column flex-overrides ongedaan maken */
+.elementor-section:has(.memtcg-about-photos) > .elementor-container > .elementor-column {
+    width: auto;
+    max-width: none;
+    flex: 0 0 auto;
+}
+
+/* Geen extra padding op widget-wrap */
+.elementor-section:has(.memtcg-about-photos) .elementor-widget-wrap {
+    padding: 0;
+}
+
+/* Widget-styling — class staat HIER op de widget, dus directe selector */
+.memtcg-about-photos {
+    margin: 0;
+}
+
+.memtcg-about-photos > .elementor-widget-container {
+    aspect-ratio: 16 / 10;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    background:
+        linear-gradient(135deg, rgba(37,150,190,0.10) 0%, rgba(0,0,0,0.6) 100%),
+        var(--bg-card);
+}
+
+/* Image vult de box volledig met cover-crop */
+.memtcg-about-photos img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    display: block;
+    border-radius: 0;
+}
+
+
+/* ===========================================================
+   5. SECTION 3 — USP CARDS
+   =========================================================== */
+
+.about-page .about-usps {
+    padding: 28px 0 64px;
+}
+
+.about-page .about-usps__header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.about-page .about-usps__header h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(22px, 2.8vw, 30px);
+    line-height: 1.25;
+    color: var(--c-text-strong);
+    letter-spacing: -0.2px;
+    margin: 0 0 12px;
+}
+
+.about-page .about-usps__header p {
+    max-width: 580px;
+    margin: 0 auto;
+    font-size: 14.5px;
+    color: var(--c-text-muted);
+}
+
+.about-page .about-usps__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.about-page .usp-card {
+    position: relative;
+    padding: 20px 18px;
+    margin: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
+    transition: border-color var(--t-med), transform var(--t-med);
+}
+.about-page .usp-card:hover {
+    border-color: var(--c-accent-line);
+    transform: translateY(-2px);
+}
+
+.about-page .usp-card__index {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    color: var(--c-text-strong);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+.about-page .usp-card__index::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 1px;
+    background: var(--c-line-strong);
+}
+
+.about-page .usp-card h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.35;
+    color: var(--c-accent-soft);
+    letter-spacing: -0.1px;
+    margin: 0 0 8px;
+}
+
+.about-page .usp-card p {
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--c-text);
+    margin: 0;
+}
+
+
+/* ===========================================================
+   6. SECTION 4 — COMMUNITY CTA
+   =========================================================== */
+
+.about-page .about-cta {
+    position: relative;
+    margin: 24px 0 40px;
+    padding: 50px 28px;
+    text-align: center;
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--r-lg);
+    background:
+        radial-gradient(ellipse 70% 90% at 50% 50%,
+            rgba(37,150,190,0.13) 0%,
+            transparent 70%),
+        linear-gradient(135deg, #161616 0%, #1c1c1c 100%);
+    overflow: hidden;
+}
+
+.about-page .about-cta h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(20px, 2.4vw, 28px);
+    line-height: 1.25;
+    color: var(--c-text-strong);
+    letter-spacing: -0.2px;
+    margin: 0 auto 14px;
+    max-width: 780px;
+    word-break: keep-all; /* voorkomt breek op koppeltekens */
+}
+
+.about-page .about-cta p {
+    max-width: 560px;
+    margin: 0 auto 26px;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--c-text);
+}
+
+.about-page .about-cta__buttons {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* ===========================================================
+   7. BUTTONS
+   ===========================================================
+   Custom class names om collisions te vermijden met
+   Woodmart .btn-* en commerce-button selectors uit global.
+*/
+
+.about-page .memtcg-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 42px;
+    padding: 0 22px;
+    background: var(--c-accent);
+    color: var(--c-text-strong);
+    border: 0;
+    border-radius: var(--r-md);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: none;
+    transition: background var(--t-fast), transform var(--t-fast);
+}
+.about-page .memtcg-btn-primary:hover {
+    background: var(--c-accent-soft);
+    color: var(--c-text-strong);
+    transform: translateY(-1px);
+}
+
+.about-page .memtcg-btn-pill-community {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 42px;
+    padding: 0 18px;
+    background: var(--c-accent-tint);
+    border: 1px solid var(--c-accent-line);
+    border-radius: var(--r-pill);
+    color: var(--c-accent-soft);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background var(--t-fast),
+                border-color var(--t-fast),
+                transform var(--t-fast);
+}
+.about-page .memtcg-btn-pill-community:hover {
+    background: rgba(37,150,190,0.20);
+    border-color: var(--c-accent);
+    color: var(--c-accent-soft);
+    transform: translateY(-1px);
+}
+.about-page .memtcg-btn-pill-community svg {
+    flex-shrink: 0;
+}
+
+
+/* ===========================================================
+   8. RESPONSIVE
+   =========================================================== */
+
+@media (max-width: 960px) {
+    .about-page .about-usps__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .about-page {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .about-page .about-intro {
+        padding: 24px 0 32px;
+    }
+
+    .elementor-section:has(.memtcg-about-photos) {
+        padding: 8px 0 28px;
+    }
+    .elementor-section:has(.memtcg-about-photos) > .elementor-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .about-page .about-usps {
+        padding: 20px 0 48px;
+    }
+    .about-page .about-usps__header {
+        margin-bottom: 24px;
+    }
+    .about-page .about-usps__grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .about-page .about-cta {
+        margin: 16px 0 32px;
+        padding: 40px 22px;
+    }
+
+    /* "Bekijk de shop" knop verbergen — Shop staat al in mobile nav */
+    .about-page .about-cta .memtcg-btn-primary {
+        display: none;
+    }
+}
