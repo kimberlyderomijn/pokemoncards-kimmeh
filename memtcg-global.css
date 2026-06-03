@@ -1,0 +1,1382 @@
+/* ============================================
+   MEMTCG Sitewide CSS — v2.1
+   ============================================
+
+   Complete sitewide stylesheet voor staging.memtcg.nl.
+   Plak in: Elementor -> Site Settings -> Custom CSS -> Global tab
+   (helemaal bovenaan; page-specifieke CSS hieronder of in §11+)
+
+   STRUCTUUR
+
+   TIER 1 — Global tokens & base
+   §  1  Design tokens (:root)
+   §  2  Typografie (headings, content-scoped)
+   §  3  Primary buttons (commerce flow)
+   §  4  Secondary buttons
+   §  5  Price displays
+   §  6  Input fields (WC forms)
+
+   TIER 2 — Sitewide patterns
+   §  7  Side-cart drawer
+   §  8  Woodmart checkout steps (stepper)
+   §  9  Free shipping progress bar
+   § 10  WooCommerce notices (message/info/error)
+
+   TIER 3 — Page-specific
+   § 11  Mijn account / Dashboard
+         11.1 Layout              11.5 Dashboard icoon-grid
+         11.2 Sidebar kaart       11.6 Accountdetails
+         11.3 Navigatie links     11.7 Adressen
+         11.4 Welkomst-kaart      11.8 Mobiel
+   § 12  Page-title hides
+   ============================================ */
+
+
+/* ===========================================================
+   § 1  DESIGN TOKENS — :root
+   =========================================================== */
+
+:root {
+    /* Brand kleuren */
+    --c-accent:        #2596BE;
+    --c-accent-soft:   #74B6D2;
+    --c-accent-glow:   rgba(37, 150, 190, 0.4);
+    --c-accent-tint:   rgba(37, 150, 190, 0.12);
+    --c-accent-line:   rgba(37, 150, 190, 0.7);
+
+    /* Tekst op donkere achtergrond */
+    --c-text:          rgba(255, 255, 255, 0.78);
+    --c-text-strong:   #FFFFFF;
+    --c-text-muted:    rgba(255, 255, 255, 0.55);
+    --c-text-faint:    rgba(255, 255, 255, 0.4);
+    --c-text-thumb:    rgba(255, 255, 255, 0.7);
+
+    /* Lijnen / borders */
+    --c-line:          rgba(255, 255, 255, 0.08);
+    --c-line-soft:     rgba(255, 255, 255, 0.04);
+    --c-line-strong:   rgba(255, 255, 255, 0.12);
+
+    /* Status */
+    --c-stock:         #6BC76D;
+    --c-stock-glow:    rgba(107, 199, 109, 0.6);
+    --c-stock-line:    rgba(107, 199, 109, 0.35);
+    --c-low:           #F1C969;
+    --c-low-glow:      rgba(241, 201, 105, 0.6);
+    --c-low-line:      rgba(241, 201, 105, 0.35);
+    --c-error:         #F58685;
+
+    /* Surfaces */
+    --bg-page:         #0C0C0C;
+    --bg-card:         linear-gradient(135deg, #1a1a1a 0%, #232323 100%);
+    --bg-card-hero:    radial-gradient(ellipse 70% 50% at 50% 40%,
+                          var(--c-accent-tint) 0%, transparent 60%),
+                       linear-gradient(135deg, #1a1a1a 0%, #232323 100%);
+    --bg-input:        rgba(255, 255, 255, 0.04);
+    --bg-chip:         rgba(0, 0, 0, 0.55);
+    --bg-chip-lang:    rgba(0, 0, 0, 0.6);
+
+    /* Typografie */
+    --font-display:    'Poppins', sans-serif;
+    --font-body:       'Roboto', sans-serif;
+    --font-mono:       'SF Mono', Menlo, monospace;
+
+    /* Radii */
+    --r-sm:  4px;
+    --r-md:  8px;
+    --r-lg:  12px;
+    --r-pill: 50px;
+
+    /* Spacing schaal */
+    --gap-2xs: 6px;
+    --gap-xs:  14px;
+    --gap-sm:  18px;
+    --gap-md:  24px;
+    --gap-lg:  28px;
+    --gap-xl:  32px;
+    --gap-2xl: 48px;
+
+    /* Transitions */
+    --t-fast: 150ms ease;
+    --t-med:  200ms ease;
+}
+
+
+/* ===========================================================
+   § 2  TYPOGRAFIE — content-headings scoped
+   ===========================================================
+   Scope beperkt tot WC content, page content en product cards.
+   NIET globaal op alle h1-h6, want dat raakt header/footer/nav.
+*/
+
+.woocommerce h1, .woocommerce h2, .woocommerce h3, .woocommerce h4, .woocommerce h5, .woocommerce h6,
+.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6,
+.wd-entities-title,
+h1.product_title,
+.elementor-widget-woocommerce-product-title h1,
+.elementor-widget-woocommerce-product-title h2 {
+    font-family: var(--font-display) !important;
+}
+
+
+/* ===========================================================
+   § 3  PRIMARY BUTTONS — commerce-flow knoppen
+   =========================================================== */
+
+.single_add_to_cart_button,
+.checkout-button,
+.wc-proceed-to-checkout a.button,
+button[name="apply_coupon"],
+button[name="woocommerce_checkout_place_order"],
+#place_order {
+    background: var(--c-accent) !important;
+    color: var(--c-text-strong) !important;
+    border: 0 !important;
+    border-radius: var(--r-md) !important;
+    font-family: var(--font-body) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.6px !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+    transition: background var(--t-fast), transform var(--t-fast);
+}
+.single_add_to_cart_button:hover,
+.checkout-button:hover,
+.wc-proceed-to-checkout a.button:hover,
+button[name="apply_coupon"]:hover,
+button[name="woocommerce_checkout_place_order"]:hover,
+#place_order:hover {
+    background: var(--c-accent-soft) !important;
+    transform: translateY(-1px);
+}
+
+
+/* ===========================================================
+   § 4  SECONDARY BUTTONS — outline-stijl
+   =========================================================== */
+
+button[name="update_cart"],
+.cart_totals .wc-backward,
+form.checkout button.wc-backward {
+    background: transparent !important;
+    color: var(--c-text) !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-md) !important;
+    font-family: var(--font-body) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.4px !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+    transition: border-color var(--t-fast), color var(--t-fast);
+}
+button[name="update_cart"]:hover,
+.cart_totals .wc-backward:hover {
+    border-color: var(--c-accent) !important;
+    color: var(--c-accent-soft) !important;
+}
+
+
+/* ===========================================================
+   § 5  PRICE DISPLAYS — WC price spans
+   =========================================================== */
+
+.woocommerce-Price-amount {
+    color: var(--c-accent);
+    font-weight: 600;
+}
+del .woocommerce-Price-amount {
+    color: var(--c-text-faint);
+    text-decoration: line-through;
+}
+
+
+/* ===========================================================
+   § 6  INPUT FIELDS — WC forms, donker thema
+   =========================================================== */
+
+.woocommerce form input[type="text"],
+.woocommerce form input[type="email"],
+.woocommerce form input[type="tel"],
+.woocommerce form input[type="password"],
+.woocommerce form input[type="number"],
+.woocommerce form textarea,
+.woocommerce form select,
+.woocommerce-cart-form input[type="text"],
+.woocommerce-checkout input[type="text"],
+.woocommerce-checkout input[type="email"],
+.woocommerce-checkout input[type="tel"] {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-md) !important;
+    color: var(--c-text-strong) !important;
+    font-family: var(--font-body) !important;
+}
+.woocommerce form input:focus,
+.woocommerce form textarea:focus,
+.woocommerce form select:focus,
+.woocommerce-cart-form input:focus,
+.woocommerce-checkout input:focus {
+    border-color: var(--c-accent) !important;
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--c-accent-tint) !important;
+}
+.woocommerce form input::placeholder,
+.woocommerce form textarea::placeholder,
+.woocommerce-cart-form input::placeholder {
+    color: var(--c-text-muted) !important;
+}
+
+
+/* ===========================================================
+   § 7  SIDE-CART DRAWER
+   =========================================================== */
+
+
+/* § 7.1  Drawer root */
+
+.cart-widget-side {
+    background: var(--bg-page, #0C0C0C) !important;
+    color: var(--c-text) !important;
+}
+.cart-widget-side.color-scheme-light,
+.cart-widget-side.color-scheme-light * {
+    color: var(--c-text) !important;
+}
+
+
+/* § 7.2  Heading — Shopping cart + Close */
+
+.cart-widget-side .wd-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--c-line);
+}
+.cart-widget-side .wd-heading .title {
+    font-family: var(--font-display) !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    color: var(--c-text-strong) !important;
+}
+
+.cart-widget-side .close-side-widget a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--c-text-muted) !important;
+    font-family: var(--font-body) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    text-decoration: none !important;
+    transition: color var(--t-fast);
+}
+.cart-widget-side .close-side-widget a:hover {
+    color: var(--c-text-strong) !important;
+}
+
+
+/* § 7.3  Product list + items */
+
+.cart-widget-side ul.cart_list.product_list_widget {
+    list-style: none;
+    margin: 0;
+    padding: 8px 20px;
+    background: transparent !important;
+}
+
+.cart-widget-side ul.cart_list li.woocommerce-mini-cart-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--c-line);
+    background: transparent !important;
+}
+.cart-widget-side ul.cart_list li.woocommerce-mini-cart-item:last-child {
+    border-bottom: 0;
+}
+
+
+/* § 7.3a  wd-fill overlay verbergen
+   Woodmart's <a class="cart-item-link wd-fill"> bedekt de hele
+   rij voor klikbaarheid. Tekst "Tonen" mag onzichtbaar. */
+.cart-widget-side ul.cart_list li a.cart-item-link.wd-fill {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    color: transparent !important;
+    text-indent: -9999px !important;
+    overflow: hidden;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+/* § 7.3b  Echte content boven overlay zodat klikken werkt */
+.cart-widget-side ul.cart_list li a.cart-item-image,
+.cart-widget-side ul.cart_list li .cart-info,
+.cart-widget-side ul.cart_list li a.remove {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* § 7.3c  Thumbnail — zonder card-styling, gewoon PNG */
+.cart-widget-side ul.cart_list li a.cart-item-image {
+    flex-shrink: 0;
+    display: block;
+    width: 56px;
+    height: 70px;
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0 !important;
+    border-radius: var(--r-sm) !important;
+    overflow: hidden;
+}
+.cart-widget-side ul.cart_list li a.cart-item-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    border-radius: var(--r-sm) !important;
+}
+
+
+/* § 7.3d  Productnaam — wrapper + titel
+   De daadwerkelijke titel is <span class="wd-entities-title">
+   binnen .cart-info; <a class="cart-item-link wd-fill"> is
+   slechts het onzichtbare row-overlay-anker (zie § 7.3a). */
+.cart-widget-side ul.cart_list li .cart-info {
+    flex: 1;
+    min-width: 0;
+    padding-right: 24px;
+}
+.cart-widget-side ul.cart_list li .cart-info .wd-entities-title {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500 !important;
+    font-size: 12.5px !important;
+    line-height: 1.32 !important;
+    letter-spacing: 0 !important;
+    color: var(--c-text-strong) !important;
+    text-wrap: balance;
+}
+
+
+/* § 7.3e  Qty x prijs ("1 x EUR 109,95") */
+.cart-widget-side ul.cart_list li .quantity {
+    display: block;
+    font-family: var(--font-body) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: var(--c-text-muted) !important;
+    line-height: 1.4;
+}
+.cart-widget-side ul.cart_list li .quantity .woocommerce-Price-amount,
+.cart-widget-side ul.cart_list li .quantity .woocommerce-Price-amount bdi,
+.cart-widget-side ul.cart_list li .quantity .woocommerce-Price-amount .woocommerce-Price-currencySymbol,
+.cart-widget-side ul.cart_list li .quantity .amount {
+    color: var(--c-accent) !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+}
+
+
+/* § 7.3f  X verwijder-knop */
+.cart-widget-side ul.cart_list li a.remove {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: rgba(0,0,0,0.4) !important;
+    color: var(--c-text-faint) !important;
+    border-radius: 50%;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 400 !important;
+    text-decoration: none !important;
+    transition: background var(--t-fast), color var(--t-fast);
+}
+.cart-widget-side ul.cart_list li a.remove:hover {
+    background: rgba(245, 134, 133, 0.18) !important;
+    color: var(--c-error) !important;
+}
+.cart-widget-side ul.cart_list li a.remove::before,
+.cart-widget-side ul.cart_list li a.remove::after {
+    display: none !important;
+    content: none !important;
+}
+
+
+/* § 7.4  Subtotaal */
+
+.cart-widget-side p.woocommerce-mini-cart__total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    margin: 0;
+    border-top: 1px solid var(--c-line);
+    background: transparent !important;
+    font-family: var(--font-body) !important;
+}
+.cart-widget-side p.woocommerce-mini-cart__total strong {
+    color: var(--c-text-strong) !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+.cart-widget-side p.woocommerce-mini-cart__total .woocommerce-Price-amount,
+.cart-widget-side p.woocommerce-mini-cart__total .woocommerce-Price-amount bdi,
+.cart-widget-side p.woocommerce-mini-cart__total .woocommerce-Price-amount .woocommerce-Price-currencySymbol,
+.cart-widget-side p.woocommerce-mini-cart__total .amount {
+    font-family: var(--font-display) !important;
+    color: var(--c-text-strong) !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+}
+
+
+/* § 7.5  Footer + buttons */
+
+/* § 7.5a  Footer wrapper */
+.cart-widget-side .shopping-cart-widget-footer {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 16px 20px 24px !important;
+    border-top: 1px solid var(--c-line);
+}
+.cart-widget-side .shopping-cart-widget-footer > p {
+    margin: 0 !important;
+}
+
+
+/* § 7.5b  Bekijk winkelwagen — secondary outline */
+.cart-widget-side a.button.btn-cart,
+.cart-widget-side a.button.wc-forward:not(.checkout) {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100% !important;
+    height: 44px !important;
+    margin: 0 !important;
+    padding: 0 16px !important;
+    background: transparent !important;
+    color: var(--c-text) !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-md) !important;
+    box-shadow: none !important;
+    font-family: var(--font-body) !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    text-decoration: none !important;
+    transition: border-color var(--t-fast), color var(--t-fast);
+}
+.cart-widget-side a.button.btn-cart:hover,
+.cart-widget-side a.button.wc-forward:not(.checkout):hover {
+    border-color: var(--c-accent) !important;
+    color: var(--c-accent-soft) !important;
+}
+
+
+/* § 7.5c  Afrekenen — primary accent */
+.cart-widget-side a.button.checkout,
+.cart-widget-side a.checkout.wc-forward {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100% !important;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 16px !important;
+    background: var(--c-accent) !important;
+    color: var(--c-text-strong) !important;
+    border: 0 !important;
+    border-radius: var(--r-md) !important;
+    box-shadow: none !important;
+    font-family: var(--font-body) !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    letter-spacing: 0.6px !important;
+    text-transform: uppercase !important;
+    text-decoration: none !important;
+    transition: background var(--t-fast), transform var(--t-fast);
+}
+.cart-widget-side a.button.checkout:hover,
+.cart-widget-side a.checkout.wc-forward:hover {
+    background: var(--c-accent-soft) !important;
+    transform: translateY(-1px);
+}
+
+
+/* § 7.6  Empty state */
+
+.cart-widget-side p.woocommerce-mini-cart__empty-message {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--c-text-muted) !important;
+    font-family: var(--font-body) !important;
+    font-size: 14px;
+}
+
+
+/* ===========================================================
+   § 8  WOODMART CHECKOUT STEPS — stepper indicator
+   =========================================================== */
+
+/* Wrapper — flex-row met ruimte voor pijltjes */
+ul.wd-checkout-steps {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px !important;
+    margin: 0 auto !important;
+    padding: var(--gap-md) 0 !important;
+    list-style: none !important;
+}
+
+/* Reset Woodmart's eigen ::after pseudo's (waren leeg, content "") */
+ul.wd-checkout-steps li::before,
+ul.wd-checkout-steps li::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Step base styling — geldt voor zowel active als inactive */
+ul.wd-checkout-steps li {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: var(--font-display) !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.2px !important;
+    line-height: 1.4 !important;
+    list-style: none !important;
+}
+
+/* Step links — neutralize default link styling */
+ul.wd-checkout-steps li a,
+ul.wd-checkout-steps li > span {
+    display: inline-block;
+    text-decoration: none !important;
+    transition: color var(--t-fast);
+}
+
+/* Active step — wit met blauwe underline */
+ul.wd-checkout-steps li.step-active a,
+ul.wd-checkout-steps li.step-active > span {
+    color: var(--c-text-strong) !important;
+    padding-bottom: 4px;
+    border-bottom: 2px solid var(--c-accent);
+    cursor: default;
+}
+
+/* Inactive step — muted, klikbaar */
+ul.wd-checkout-steps li.step-inactive a {
+    color: var(--c-text-muted) !important;
+    cursor: pointer;
+}
+ul.wd-checkout-steps li.step-inactive a:hover {
+    color: var(--c-text) !important;
+}
+
+/* Inactive step zonder <a> (laatste step "Order complete") */
+ul.wd-checkout-steps li.step-inactive > span {
+    color: var(--c-text-muted) !important;
+    cursor: default;
+}
+
+/* Pijltjes tussen steps — ::after op alle behalve laatste */
+ul.wd-checkout-steps li:not(:last-child)::after {
+    content: "\2192" !important;
+    display: inline-block !important;
+    margin-left: 14px;
+    color: var(--c-text-faint) !important;
+    font-family: var(--font-body) !important;
+    font-weight: 400 !important;
+    font-size: 18px !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+/* Mobile — kleinere tekst, kleinere arrows */
+@media (max-width: 600px) {
+    ul.wd-checkout-steps {
+        gap: 8px !important;
+        padding: var(--gap-sm) 0 !important;
+    }
+    ul.wd-checkout-steps li {
+        font-size: 12px !important;
+        letter-spacing: 0.8px !important;
+    }
+    ul.wd-checkout-steps li:not(:last-child)::after {
+        margin-left: 8px;
+        font-size: 14px !important;
+    }
+}
+
+
+/* ===========================================================
+   § 9  FREE SHIPPING PROGRESS BAR
+   =========================================================== */
+
+
+/* § 9.1  Reset — Cart page outer wrapper */
+
+.wd-shipping-progress-bar.wd-style-bordered {
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 0 24px !important;
+}
+
+
+/* § 9.2  Container — 2-kolom grid met expliciete rows */
+
+.wd-free-progress-bar {
+    position: relative;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 14px;
+    row-gap: 12px;
+    padding: 18px 20px !important;
+    margin: 0;
+    background: var(--bg-card) !important;
+    border: 1px solid var(--c-line) !important;
+    border-radius: var(--r-md) !important;
+    color: var(--c-text) !important;
+    font-family: var(--font-body) !important;
+    transition: border-color 250ms ease, background 250ms ease;
+}
+
+
+/* § 9.3  Truck icon — expliciete placement */
+
+.wd-free-progress-bar::before {
+    content: '';
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: center;
+    justify-self: start;
+    width: 32px;
+    height: 32px;
+    background-color: var(--c-accent-tint);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2374B6D2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='1' y='3' width='15' height='13'/><polygon points='16 8 20 8 23 11 23 16 16 16 16 8'/><circle cx='5.5' cy='18.5' r='2.5'/><circle cx='18.5' cy='18.5' r='2.5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 18px 18px;
+    border-radius: var(--r-sm);
+    transition: background-color 250ms ease;
+}
+
+
+/* § 9.4  Message — kolom 2 rij 1 */
+
+.wd-free-progress-bar .progress-msg {
+    grid-column: 2;
+    grid-row: 1;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: var(--font-body) !important;
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+    color: var(--c-text) !important;
+    font-weight: 400 !important;
+    text-align: left !important;
+}
+
+.wd-free-progress-bar .progress-msg .woocommerce-Price-amount {
+    color: var(--c-text-strong) !important;
+    font-weight: 600 !important;
+}
+
+
+/* § 9.5  Track — kolom 2 rij 2 */
+
+.wd-free-progress-bar .progress-area {
+    grid-column: 2;
+    grid-row: 2;
+    position: relative;
+    height: 8px !important;
+    margin: 0 !important;
+    background: var(--bg-input) !important;
+    border-radius: var(--r-pill) !important;
+    overflow: visible !important;
+}
+
+
+/* § 9.6  Fill — .progress-bar met shimmer */
+
+.wd-free-progress-bar .progress-area .progress-bar {
+    position: relative;
+    height: 8px !important;
+    margin: 0 !important;
+    background-color: var(--c-accent) !important;
+    background-image: none !important;
+    border-radius: var(--r-pill) !important;
+    overflow: hidden !important;
+    box-shadow: 0 0 10px var(--c-accent-glow);
+    transition: width 400ms ease,
+                background-color 300ms ease,
+                box-shadow 300ms ease;
+}
+
+.wd-free-progress-bar .progress-area .progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.55) 50%,
+        transparent 100%
+    );
+    transform: translateX(-100%);
+    animation: memtcg-shimmer 2.4s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes memtcg-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+}
+
+
+/* § 9.7  Unlocked state */
+
+.wd-free-progress-bar:has(.progress-bar[style*="100%"]) {
+    border-color: var(--c-stock-line) !important;
+    background:
+        radial-gradient(ellipse 60% 100% at 50% 50%, rgba(107,199,109,0.08) 0%, transparent 70%),
+        var(--bg-card) !important;
+}
+
+.wd-free-progress-bar:has(.progress-bar[style*="100%"])::before {
+    background-color: rgba(107,199,109,0.18);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236BC76D' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+}
+
+.wd-free-progress-bar:has(.progress-bar[style*="100%"]) .progress-area .progress-bar {
+    background-color: var(--c-stock) !important;
+    box-shadow: 0 0 12px var(--c-stock-glow);
+}
+
+.wd-free-progress-bar:has(.progress-bar[style*="100%"]) .progress-area .progress-bar::after {
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(200, 255, 210, 0.6) 50%,
+        transparent 100%
+    );
+}
+
+
+/* § 9.8  Accessibility — reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+    .wd-free-progress-bar .progress-area .progress-bar::after {
+        animation: none !important;
+    }
+}
+
+
+/* § 9.9  Responsive */
+
+@media (max-width: 768px) {
+    .wd-free-progress-bar {
+        grid-template-columns: 28px 1fr;
+        column-gap: 12px;
+        row-gap: 10px;
+        padding: 16px !important;
+    }
+    .wd-free-progress-bar::before {
+        width: 28px;
+        height: 28px;
+        background-size: 16px 16px;
+    }
+    .wd-free-progress-bar .progress-msg {
+        font-size: 12.5px !important;
+    }
+}
+
+
+/* ===========================================================
+   § 10  WOOCOMMERCE NOTICES — message / info / error
+   =========================================================== */
+
+
+/* § 10.1  Base — gedeelde card styling alle 3 notice types */
+
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+    position: relative !important;
+    list-style: none !important;
+    margin: 0 0 24px !important;
+    padding: 14px 18px 14px 46px !important;
+    background: var(--bg-card) !important;
+    background-image: none !important;
+    border: 1px solid var(--c-line) !important;
+    border-left-width: 3px !important;
+    border-radius: var(--r-md) !important;
+    color: var(--c-text-strong) !important;
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 1.45 !important;
+}
+
+
+/* § 10.2  Icon base — ::before pseudo override Woodmart default */
+
+.woocommerce-message::before,
+.woocommerce-info::before,
+.woocommerce-error::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 18px;
+    top: 14px;
+    width: 20px;
+    height: 20px;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: transparent !important;
+    border: 0 !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    text-indent: 0 !important;
+}
+
+
+/* § 10.3  Success — groen + check-icoon */
+
+.woocommerce-message {
+    border-left-color: var(--c-stock) !important;
+}
+.woocommerce-message::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236BC76D' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") !important;
+}
+
+
+/* § 10.4  Info — blauw + info-icoon */
+
+.woocommerce-info {
+    border-left-color: var(--c-accent) !important;
+}
+.woocommerce-info::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2374B6D2' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='12' y1='16' x2='12' y2='12'/><line x1='12' y1='8' x2='12.01' y2='8'/></svg>") !important;
+}
+
+
+/* § 10.5  Error — rood + alert-icoon */
+
+.woocommerce-error {
+    border-left-color: var(--c-error) !important;
+}
+.woocommerce-error::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F58685' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><line x1='12' y1='8' x2='12' y2='12'/><line x1='12' y1='16' x2='12.01' y2='16'/></svg>") !important;
+}
+
+/* Multi-error <li> items binnen .woocommerce-error <ul> */
+.woocommerce-error li {
+    list-style: none !important;
+    margin: 0 0 4px !important;
+    padding: 0 !important;
+}
+.woocommerce-error li:last-child {
+    margin-bottom: 0 !important;
+}
+
+
+/* § 10.6  Buttons / links in notices */
+
+.woocommerce-message .button,
+.woocommerce-message a.button,
+.woocommerce-info .button,
+.woocommerce-info a.button {
+    display: inline-block !important;
+    float: right;
+    margin: -2px 0 0 12px !important;
+    padding: 6px 14px !important;
+    background: transparent !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-sm) !important;
+    color: var(--c-text-strong) !important;
+    font-family: var(--font-body) !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    transition: border-color var(--t-fast), color var(--t-fast);
+}
+.woocommerce-message .button:hover,
+.woocommerce-message a.button:hover,
+.woocommerce-info .button:hover,
+.woocommerce-info a.button:hover {
+    border-color: var(--c-accent) !important;
+    color: var(--c-accent-soft) !important;
+}
+
+
+/* § 10.7  Responsive */
+
+@media (max-width: 768px) {
+    .woocommerce-message,
+    .woocommerce-info,
+    .woocommerce-error {
+        padding: 12px 16px 12px 40px !important;
+        font-size: 13px !important;
+        margin: 0 0 18px !important;
+    }
+    .woocommerce-message::before,
+    .woocommerce-info::before,
+    .woocommerce-error::before {
+        left: 14px;
+        top: 12px;
+        width: 18px;
+        height: 18px;
+    }
+    .woocommerce-message .button,
+    .woocommerce-message a.button,
+    .woocommerce-info .button,
+    .woocommerce-info a.button {
+        float: none;
+        display: block !important;
+        margin: 10px 0 0 !important;
+        text-align: center;
+    }
+}
+
+
+/* ===========================================================
+   § 11  MIJN ACCOUNT / DASHBOARD   (Tier 3 — page-specific)
+   =========================================================== */
+
+
+/* § 11.1  Layout — sidebar + content uitlijning */
+
+.wd-my-account-wrapper {
+    align-items: start !important;
+}
+
+
+/* § 11.2  Sidebar kaart — wrapper + 'Mijn account'-titel (eyebrow) */
+
+.wd-my-account-sidebar {
+    padding: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-lg);
+}
+
+/* 'Mijn account'-titel -> kleine eyebrow */
+.wd-my-account-sidebar .woocommerce-MyAccount-title,
+.wd-my-account-sidebar h3.entry-title {
+    margin: 0 !important;
+    padding: 14px 16px 10px !important;
+    font-family: var(--font-display) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    color: var(--c-text-muted) !important;
+}
+
+
+/* § 11.3  Navigatie links — hover + actieve accent-pill + logout */
+
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation ul {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 8px 0 0 !important;
+}
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li a {
+    display: block;
+    padding: 12px 16px !important;
+    border-radius: var(--r-md) !important;
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: var(--c-text) !important;
+    text-decoration: none !important;
+    transition: background var(--t-fast), color var(--t-fast);
+}
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li a:hover {
+    background: var(--c-line-soft);
+    color: var(--c-text-strong) !important;
+}
+
+/* Actieve link -> volle accent-pill */
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li.is-active a {
+    background: var(--c-accent) !important;
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    border-radius: var(--r-md) !important;
+}
+
+/* Logout subtiel apart, rood op hover */
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li.woocommerce-MyAccount-navigation-link--customer-logout a {
+    color: var(--c-text-muted) !important;
+}
+.wd-my-account-sidebar .woocommerce-MyAccount-navigation li.woocommerce-MyAccount-navigation-link--customer-logout a:hover {
+    background: rgba(245,134,133,0.10);
+    color: var(--c-error) !important;
+}
+
+
+/* § 11.4  Welkomst-kaart   (alleen dashboard)
+   De twee dashboard-paragrafen worden visueel een kaart:
+   - p1 = bovenkant (afgerond boven) met de begroeting
+   - p2 = onderkant (afgerond onder) met de uitleg
+   Gescoped met :has(.wd-my-account-links) zodat alleen de
+   dashboard-pagina geraakt wordt — niet orders/edit-account. */
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p:first-of-type,
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p:last-of-type {
+    margin: 0 !important;
+    padding-left: 26px !important;
+    padding-right: 26px !important;
+    background: var(--bg-card);
+    border-left: 1px solid var(--c-line);
+    border-right: 1px solid var(--c-line);
+    font-family: var(--font-body);
+    line-height: 1.6;
+}
+
+/* p1 — bovenkant + begroeting */
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p:first-of-type {
+    padding-top: 24px !important;
+    padding-bottom: 12px !important;
+    border-top: 1px solid var(--c-line);
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-text);
+}
+/* Naam oplichten (eerste <strong>) */
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p:first-of-type strong:first-of-type {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--c-text-strong);
+}
+
+/* p2 — onderkant + uitleg */
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p:last-of-type {
+    padding-top: 0 !important;
+    padding-bottom: 24px !important;
+    border-bottom: 1px solid var(--c-line);
+    border-radius: 0 0 var(--r-lg) var(--r-lg);
+    font-size: 14px;
+    color: var(--c-text-muted);
+}
+
+/* Links binnen de kaart */
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p a {
+    color: var(--c-accent);
+    text-decoration: none;
+    transition: color var(--t-fast);
+}
+.woocommerce-MyAccount-content:has(.wd-my-account-links) > p a:hover {
+    color: var(--c-accent-soft);
+}
+
+
+/* § 11.5  Dashboard icoon-grid — kaarten + accent icon-chip + hover-lift */
+
+.wd-my-account-links.wd-nav-my-acc {
+    list-style: none !important;
+    margin: 28px 0 0 !important;
+    padding: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 14px !important;
+}
+
+/* Verberg de (huidige) dashboard-tegel -> nette 3x2 */
+.wd-my-account-links.wd-nav-my-acc > li.wd-my-acc-dashboard {
+    display: none !important;
+}
+
+.wd-my-account-links.wd-nav-my-acc > li {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.wd-my-account-links.wd-nav-my-acc > li > a {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 30px 16px !important;
+    background: var(--bg-card);
+    border: 1px solid var(--c-line) !important;
+    border-radius: var(--r-lg) !important;
+    text-align: center;
+    text-decoration: none !important;
+    color: var(--c-text) !important;
+    transition: border-color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+}
+
+/* Icon-chip met WoodMart-glyph */
+.wd-my-account-links.wd-nav-my-acc > li > a .wd-nav-icon {
+    display: grid !important;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    margin: 0 !important;
+    border-radius: var(--r-md);
+    background: var(--c-accent-tint);
+    transition: background var(--t-fast);
+}
+.wd-my-account-links.wd-nav-my-acc > li > a .wd-nav-icon::before {
+    font-size: 24px !important;
+    line-height: 1 !important;
+    color: var(--c-accent) !important;
+}
+
+/* Label */
+.wd-my-account-links.wd-nav-my-acc > li > a .nav-link-text {
+    font-family: var(--font-display) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.2px;
+    color: var(--c-text-strong) !important;
+}
+
+/* Hover — lift + accent-rand + schaduw */
+.wd-my-account-links.wd-nav-my-acc > li > a:hover {
+    border-color: var(--c-accent-line) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.45);
+}
+.wd-my-account-links.wd-nav-my-acc > li > a:hover .wd-nav-icon {
+    background: rgba(37,150,190,0.22);
+}
+
+
+/* § 11.6  Accountdetails — wachtwoord-fieldset -> kaart
+   De default <fieldset>-rand (grijze streep met de legend
+   er dwars doorheen) past niet in het thema. We maken er een
+   nette kaart van — zelfde gradient/rand/radius als de rest —
+   met de legend 'Wachtwoordwijziging' als kop. */
+.woocommerce-EditAccountForm fieldset,
+form.edit-account fieldset {
+    margin: 28px 0 28px !important;
+    padding: 28px 26px 26px !important;
+    display: flow-root;
+    background: var(--bg-card);
+    border: 1px solid var(--c-line) !important;
+    border-radius: var(--r-lg) !important;
+}
+.woocommerce-EditAccountForm fieldset legend,
+form.edit-account fieldset legend {
+    float: left !important;
+    width: 100% !important;
+    margin: 0 0 20px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    font-family: var(--font-display) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    color: var(--c-text-strong) !important;
+}
+/* eerste veld netjes onder de gefloate legend */
+.woocommerce-EditAccountForm fieldset legend + .form-row,
+.woocommerce-EditAccountForm fieldset legend + p,
+form.edit-account fieldset legend + .form-row,
+form.edit-account fieldset legend + p {
+    clear: both;
+}
+/* laatste veld zonder onderspatie zodat de kaart-padding klopt */
+.woocommerce-EditAccountForm fieldset .form-row:last-child,
+form.edit-account fieldset .form-row:last-child {
+    margin-bottom: 0 !important;
+}
+
+
+/* § 11.7  Adressen — Factuur- & Verzendadres als kaarten
+   Markup: .woocommerce-Addresses.col2-set met 2x
+   .woocommerce-Address (header.title > h2 + a.edit, daarna
+   <address>). De bewerk-link houdt zijn woodmart-font pencil
+   (::before) — we kleuren/positioneren 'm alleen. */
+
+/* intro-tekst boven de kaarten */
+.woocommerce-MyAccount-content:has(.woocommerce-Addresses) > p:first-of-type {
+    margin: 0 0 24px !important;
+    color: var(--c-text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* 2-koloms grid (vervangt WooCommerce col2-set floats) */
+.woocommerce-Addresses {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+    width: 100% !important;
+    margin: 8px 0 0 !important;
+}
+.woocommerce-Addresses .u-column1,
+.woocommerce-Addresses .u-column2,
+.woocommerce-Addresses .col-1,
+.woocommerce-Addresses .col-2 {
+    float: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* de kaart — flex-kolom (nodig voor de volgorde) maar zonder vaste hoogte.
+   NB: selector op .woocommerce-Addresses .woocommerce-Address (2 classes)
+   zodat 'ie WoodMart's eigen .woocommerce-Addresses .woocommerce-Address
+   qua specificity verslaat — anders pakt de padding niet op de live site. */
+.woocommerce-Addresses .woocommerce-Address {
+    display: flex !important;
+    flex-direction: column;
+    padding: 28px 26px !important;
+    background: var(--bg-card);
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-lg);
+}
+
+/* de header lost zich op (display:contents) zodat <h2> en <a.edit> losse
+   items worden — zo staan ze in nette volgorde: titel -> adres -> actie. */
+.woocommerce-Address .woocommerce-Address-title.title {
+    display: contents !important;
+}
+
+/* titel — kaartkop in wit, net als de wachtwoord-kaart */
+.woocommerce-Address .woocommerce-Address-title.title h2,
+.woocommerce-Address .woocommerce-Address-title.title h3 {
+    order: 0;
+    margin: 0 0 18px !important;
+    padding: 0 !important;
+    font-family: var(--font-display) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    color: var(--c-text-strong) !important;
+}
+
+/* adres — de inhoud */
+.woocommerce-Address address {
+    order: 1;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    font-family: var(--font-body) !important;
+    font-style: normal !important;
+    font-size: 15px !important;
+    line-height: 1.85 !important;
+    color: var(--c-text) !important;
+}
+
+/* bewerk-/toevoeg-link — actie direct onder het adres (pencil via
+   woodmart-font ::before, kleurt mee met de accent-kleur) */
+.woocommerce-Address .woocommerce-Address-title.title a.edit {
+    order: 2;
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    white-space: nowrap;
+    margin: 20px 0 0 !important;
+    padding: 0 !important;
+    color: var(--c-accent) !important;
+    font-family: var(--font-body) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: color var(--t-fast);
+}
+.woocommerce-Address .woocommerce-Address-title.title a.edit:hover {
+    color: var(--c-accent-soft) !important;
+}
+
+
+/* § 11.8  Mobiel */
+
+@media (max-width: 768.98px) {
+    .wd-my-account-links.wd-nav-my-acc {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+    .wd-my-account-links.wd-nav-my-acc > li > a {
+        padding: 22px 12px !important;
+        gap: 10px;
+    }
+    .wd-my-account-links.wd-nav-my-acc > li > a .wd-nav-icon {
+        width: 46px;
+        height: 46px;
+    }
+    .woocommerce-MyAccount-content:has(.wd-my-account-links) > p:first-of-type,
+    .woocommerce-MyAccount-content:has(.wd-my-account-links) > p:last-of-type {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+    .woocommerce-EditAccountForm fieldset,
+    form.edit-account fieldset {
+        padding: 22px 18px 20px !important;
+        margin: 24px 0 24px !important;
+    }
+    .woocommerce-Addresses {
+        grid-template-columns: 1fr !important;
+        gap: 14px;
+    }
+    .woocommerce-Address {
+        padding: 20px !important;
+    }
+}
+
+
+/* ===========================================================
+   § 12  PAGE-TITLE HIDES — per page-id
+   ===========================================================
+   Mijn account (19), Contact (30769), Agenda (29906).
+*/
+
+body.page-id-19 .wd-page-title.page-title,
+body.page-id-30769 .wd-page-title.page-title,
+body.page-id-29906 .wd-page-title.page-title {
+    display: none;
+}
