@@ -1,0 +1,1032 @@
+/* ============================================
+   MEMTCG Checkout — v4.0 (refactor)
+   ============================================
+   Single-file consolidation of:
+     - v3.0 base
+     - v3.1 patch (selectable shipping/payment rows,
+                   custom checkbox styling, terms-wrapper
+                   selector fix, error-state grid fix)
+     - v3.2 patch (notice-box padding, ship-to ruimte,
+                   shipping country full-width)
+
+   Scope hook: body.page-id-18 (checkout).
+   Plak in WoodMart → Site Settings → Custom CSS.
+   ============================================
+   STRUCTUUR
+    1. Layout              — 2-koloms grid + WoodMart resets
+    2. Coupon row          — toggle + form (JS-toggle vriendelijk)
+    3. Section headings
+    4. Form rows           — labels, required, validation
+    5. Select2             — country dropdown dark
+    6. Field clearfix      — billing/shipping float containment
+                            + shipping country full-width override
+    7. Ship-to-different   — heading + custom checkbox
+    8. Order review card   — wrapper + bonnetje killer
+    9. Order review table  — borders op tr-level (sub-pixel safe)
+   10. Shipping methods    — selecteerbare rijen, custom radios
+   11. Payment methods     — selecteerbare rijen, Mollie-icoon rechts
+   12. Terms checkbox      — custom checkbox in box
+   13. Place order
+   14. Privacy policy text
+   15. Error state         — NoticeGroup grid + inline veldfouten
+   ============================================ */
+
+
+/* ===========================================================
+   1. LAYOUT — form 2-koloms grid
+   ===========================================================
+   WoodMart legacy: lege <p> spacers + max-width:50%/flex:1 0 0
+   op kinderen breken de grid. Beide neutraliseren.
+   =========================================================== */
+
+form.checkout.woocommerce-checkout {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px !important;
+    align-items: start;
+}
+
+form.checkout.woocommerce-checkout > p:empty,
+form.checkout.woocommerce-checkout > p:not([class]):not([id]) {
+    display: none !important;
+}
+
+form.checkout > #customer_details,
+form.checkout > .checkout-order-review {
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    flex: none !important;
+    float: none !important;
+}
+
+@media (max-width: 991px) {
+    form.checkout.woocommerce-checkout {
+        grid-template-columns: 1fr;
+        gap: 32px !important;
+    }
+}
+
+
+/* ===========================================================
+   2. COUPON ROW
+   ===========================================================
+   GEEN !important op form.checkout_coupon's display.
+   WC's JS toggelt inline style="display:none"; inline style
+   wint van non-!important regels → bij page-load is form dicht.
+   =========================================================== */
+
+.woocommerce-form-coupon-toggle .woocommerce-info {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-md) !important;
+    padding: 14px 18px !important;
+    margin: 0 0 var(--gap-lg) !important;
+    color: var(--c-text) !important;
+    font-family: var(--font-body) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+}
+
+.woocommerce-form-coupon-toggle .woocommerce-info::before,
+#payment .woocommerce-info::before {
+    display: none !important;
+    content: none !important;
+}
+
+.woocommerce-form-coupon-toggle .woocommerce-info a.showcoupon {
+    color: var(--c-accent) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: color var(--t-fast);
+}
+.woocommerce-form-coupon-toggle .woocommerce-info a.showcoupon:hover {
+    color: var(--c-accent-soft) !important;
+}
+
+form.checkout_coupon.woocommerce-form-coupon {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    background: var(--bg-input);
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--r-md);
+    padding: 16px;
+    margin: 0 0 var(--gap-lg);
+}
+form.checkout_coupon p.form-row {
+    display: flex;
+    flex: 1 1 auto;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+    gap: .5rem;
+    align-items: stretch;
+}
+form.checkout_coupon p.form-row.form-row-last {
+    flex: 0 0 auto;
+}
+form.checkout_coupon p.form-row input[type="text"] {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+form.checkout_coupon button[name="apply_coupon"] {
+    flex: 0 0 auto;
+    height: 44px;
+    padding: 0 20px !important;
+    white-space: nowrap;
+}
+form.checkout_coupon .clear { display: none; }
+
+
+/* ===========================================================
+   3. SECTION HEADINGS
+   =========================================================== */
+
+.woocommerce-billing-fields > h3,
+.woocommerce-shipping-fields h3#ship-to-different-address,
+#order_review_heading,
+#payment .woocommerce-checkout-payment-heading {
+    font-family: var(--font-display) !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    color: var(--c-text-strong) !important;
+    margin: 0 0 var(--gap-md) !important;
+    padding: 0 !important;
+}
+
+#order_review_heading {
+    text-align: center;
+    margin-bottom: var(--gap-md) !important;
+}
+
+
+/* ===========================================================
+   4. FORM ROWS — labels, required, validation
+   =========================================================== */
+
+form.checkout .form-row {
+    margin: 0 0 16px !important;
+}
+
+form.checkout .form-row label,
+.woocommerce-shipping-fields h3#ship-to-different-address label {
+    display: block;
+    margin: 0 0 6px !important;
+    font-family: var(--font-body) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: var(--c-text) !important;
+    text-transform: none !important;
+    letter-spacing: 0.2px !important;
+}
+
+form.checkout .form-row label .optional {
+    color: var(--c-text-muted) !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+}
+
+form.checkout .form-row .required,
+form.checkout .form-row abbr.required {
+    color: var(--c-error) !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    border: 0 !important;
+}
+
+form.checkout .form-row.woocommerce-validated input.input-text {
+    border-color: var(--c-stock-line) !important;
+}
+
+
+/* ===========================================================
+   5. SELECT2 — country dropdown
+   =========================================================== */
+
+.woocommerce form .select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--single {
+    display: flex !important;
+    align-items: center;
+    height: 44px !important;
+    padding: 0 14px !important;
+    background: var(--bg-input) !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-md) !important;
+    transition: border-color var(--t-fast);
+}
+.select2-container--default .select2-selection--single:hover {
+    border-color: var(--c-accent-line) !important;
+}
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-container--default.select2-container--open .select2-selection--single {
+    border-color: var(--c-accent) !important;
+    box-shadow: 0 0 0 3px var(--c-accent-tint) !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding: 0 !important;
+    color: var(--c-text-strong) !important;
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    line-height: 42px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: var(--c-text-muted) !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 42px !important;
+    right: 10px !important;
+    top: 0 !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: var(--c-text-muted) transparent transparent transparent !important;
+}
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+    border-color: transparent transparent var(--c-text-strong) transparent !important;
+}
+
+.select2-container--default .select2-dropdown {
+    overflow: hidden;
+    background: #1a1a1a !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-md) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+}
+.select2-container--default .select2-search--dropdown {
+    padding: 8px !important;
+}
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    padding: 8px 10px !important;
+    background: var(--bg-input) !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-sm) !important;
+    color: var(--c-text-strong) !important;
+    font-family: var(--font-body) !important;
+}
+.select2-container--default .select2-results__option {
+    padding: 8px 14px !important;
+    color: var(--c-text) !important;
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected],
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background: var(--c-accent) !important;
+    color: var(--c-text-strong) !important;
+}
+.select2-container--default .select2-results__option[aria-selected="true"],
+.select2-container--default .select2-results__option--selected {
+    background: var(--c-accent-tint) !important;
+    color: var(--c-text-strong) !important;
+}
+
+
+/* ===========================================================
+   6. FIELD CLEARFIX + COUNTRY FULL-WIDTH
+   ===========================================================
+   form-row-first/last gebruiken float:left/right. Zonder
+   containment lekt de laatste float in de volgende sibling.
+   flow-root maakt een new BFC die floats inkapselt.
+
+   Verzend-land/regio zit standaard in form-row-last (float),
+   wat een halve breedte oplevert → forceer full-width.
+   =========================================================== */
+
+.woocommerce-billing-fields__field-wrapper,
+.woocommerce-shipping-fields__field-wrapper {
+    display: flow-root;
+}
+
+.woocommerce-billing-fields,
+.woocommerce-shipping-fields {
+    display: flow-root;
+    width: 100%;
+    clear: both;
+}
+
+.woocommerce-shipping-fields {
+    margin-top: var(--gap-lg);
+}
+
+.woocommerce-shipping-fields #shipping_country_field.form-row-last,
+.woocommerce-shipping-fields #shipping_country_field {
+    float: none !important;
+    clear: both !important;
+    width: 100% !important;
+    margin-right: 0 !important;
+}
+.woocommerce-shipping-fields #shipping_country_field .select2-container,
+.woocommerce-shipping-fields #shipping_country_field .select2-container .select2-selection--single {
+    width: 100% !important;
+    text-align: left !important;
+}
+
+
+/* ===========================================================
+   7. SHIP-TO-DIFFERENT — heading + custom checkbox
+   ===========================================================
+   DOM: h3#ship-to-different-address > label.checkbox > input + span
+   accent-color kleurt alleen de aangevinkte state; voor consistente
+   styling in beide states gebruiken we appearance:none + custom check.
+   =========================================================== */
+
+h3#ship-to-different-address {
+    display: block !important;
+    width: 100%;
+    clear: both;
+    margin: var(--gap-lg) 0 var(--gap-sm) !important;
+    padding: var(--gap-lg) 0 0 !important;
+    border-top: 1px solid var(--c-line) !important;
+}
+
+h3#ship-to-different-address label.checkbox,
+h3#ship-to-different-address label.woocommerce-form__label-for-checkbox,
+h3#ship-to-different-address .woocommerce-form__label-checkbox {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    margin: 0 !important;
+    cursor: pointer;
+    font-family: var(--font-display) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    color: var(--c-text-strong) !important;
+}
+h3#ship-to-different-address label span {
+    color: var(--c-text-strong) !important;
+}
+
+h3#ship-to-different-address input[type="checkbox"] {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    flex: 0 0 auto;
+    position: relative !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    background: var(--bg-input) !important;
+    border: 1.5px solid var(--c-line-strong) !important;
+    border-radius: 5px !important;
+    cursor: pointer;
+    transition: background var(--t-fast), border-color var(--t-fast);
+}
+h3#ship-to-different-address input[type="checkbox"]:hover {
+    border-color: var(--c-accent-soft) !important;
+}
+h3#ship-to-different-address input[type="checkbox"]:checked {
+    background: var(--c-accent) !important;
+    border-color: var(--c-accent) !important;
+}
+h3#ship-to-different-address input[type="checkbox"]:checked::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 5px !important;
+    top: 1.5px !important;
+    width: 5px !important;
+    height: 9px !important;
+    border: solid #fff !important;
+    border-width: 0 2px 2px 0 !important;
+    transform: rotate(45deg) !important;
+}
+
+
+/* ===========================================================
+   8. ORDER REVIEW CARD
+   ===========================================================
+   ::before/::after killer voor WoodMart's "ticket-bonnetje"
+   zaagtand-decoratie (mask-image of background-image afhankelijk
+   van WoodMart-versie — beide neutraliseren).
+   =========================================================== */
+
+.checkout-order-review {
+    padding: 28px !important;
+    background: var(--bg-card) !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-lg) !important;
+}
+
+.checkout-order-review::before,
+.checkout-order-review::after {
+    display: none !important;
+    content: none !important;
+    background: none !important;
+    -webkit-mask-image: none !important;
+            mask-image: none !important;
+}
+
+@media (min-width: 992px) {
+    .checkout-order-review {
+        position: sticky;
+        top: 24px;
+    }
+}
+
+
+/* ===========================================================
+   9. ORDER REVIEW TABLE
+   ===========================================================
+   WoodMart wrapt shop_table in .wd-table-wrapper en zet
+   display:flex op de table. Combineren met low-alpha kleuren
+   op sub-pixel x-posities → cell-borders renderen gefragmenteerd.
+   Oplossing: borders op tr-level, niet op cells.
+   =========================================================== */
+
+table.shop_table.woocommerce-checkout-review-order-table {
+    width: 100% !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-collapse: collapse !important;
+    font-family: var(--font-body) !important;
+}
+
+.checkout-order-review .wd-table-wrapper {
+    overflow: visible !important;
+    background: transparent !important;
+    border: 0 !important;
+}
+
+/* THEAD */
+table.woocommerce-checkout-review-order-table thead th {
+    padding: 0 0 12px !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--c-line-strong) !important;
+    color: var(--c-text-strong) !important;
+    font-family: var(--font-display) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.2px !important;
+}
+table.woocommerce-checkout-review-order-table thead th.product-name  { text-align: left; }
+table.woocommerce-checkout-review-order-table thead th.product-total { text-align: right; }
+
+/* TBODY */
+table.woocommerce-checkout-review-order-table tbody tr.cart_item {
+    background: transparent !important;
+}
+table.woocommerce-checkout-review-order-table tbody td {
+    padding: 14px 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--c-line) !important;
+    color: var(--c-text) !important;
+    font-size: 13px !important;
+    line-height: 1.5;
+}
+table.woocommerce-checkout-review-order-table tbody td.product-name {
+    color: var(--c-text-strong) !important;
+    font-weight: 500;
+}
+table.woocommerce-checkout-review-order-table tbody td.product-name strong.product-quantity {
+    margin-left: 4px;
+    color: var(--c-text-muted) !important;
+    font-weight: 500 !important;
+}
+table.woocommerce-checkout-review-order-table tbody td.product-total {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* TFOOT — row reset */
+table.woocommerce-checkout-review-order-table tfoot tr,
+table.woocommerce-checkout-review-order-table tbody tr {
+    border: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+/* TFOOT — cell base */
+table.woocommerce-checkout-review-order-table tfoot th,
+table.woocommerce-checkout-review-order-table tfoot td {
+    padding: 14px 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    font-size: 13px !important;
+}
+table.woocommerce-checkout-review-order-table tfoot th {
+    color: var(--c-text-strong) !important;
+    text-align: left;
+    font-family: var(--font-display) !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+}
+table.woocommerce-checkout-review-order-table tfoot td {
+    color: var(--c-text) !important;
+    text-align: right;
+}
+
+/* TFOOT — separators op tr-level (sub-pixel safe) */
+table.woocommerce-checkout-review-order-table tfoot tr.cart-subtotal,
+table.woocommerce-checkout-review-order-table tfoot tr.order-total {
+    border-top: 1px solid var(--c-line-strong) !important;
+}
+
+/* TFOOT — order-total emphasis */
+table.woocommerce-checkout-review-order-table tfoot tr.order-total th,
+table.woocommerce-checkout-review-order-table tfoot tr.order-total td {
+    padding-top: 16px !important;
+}
+table.woocommerce-checkout-review-order-table tfoot tr.order-total th {
+    font-size: 14px !important;
+}
+table.woocommerce-checkout-review-order-table tfoot tr.order-total td strong .woocommerce-Price-amount {
+    color: var(--c-accent) !important;
+    font-family: var(--font-display) !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+}
+table.woocommerce-checkout-review-order-table tfoot tr.order-total small.includes_tax {
+    display: block;
+    margin-top: 4px;
+    color: var(--c-text-muted) !important;
+    font-size: 11px !important;
+    font-weight: 400;
+}
+table.woocommerce-checkout-review-order-table tfoot tr.order-total small.includes_tax .woocommerce-Price-amount {
+    color: var(--c-accent-soft) !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+}
+
+
+/* ===========================================================
+   10. SHIPPING METHODS — selecteerbare rijen
+   ===========================================================
+   tr.shipping flex-direction:column zodat th boven td stackt
+   en de radio-lijst de volle kolombreedte krijgt.
+
+   Radios: appearance:none + position:relative met ::after-dot.
+   position:relative is KRITIEK — anders zweeft het dot-pseudo
+   naar het midden van de kaart (default WoodMart top:4px offset
+   blijft anders ook actief).
+   =========================================================== */
+
+.wd-table-wrapper table.shop_table tr.shipping,
+.wd-table-wrapper table.shop_table tr.woocommerce-shipping-totals,
+table.woocommerce-checkout-review-order-table tfoot tr.shipping {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 6px;
+}
+
+table.woocommerce-checkout-review-order-table tfoot tr.shipping th,
+table.woocommerce-checkout-review-order-table tfoot tr.woocommerce-shipping-totals th {
+    width: 100% !important;
+    flex: 0 0 auto !important;
+    padding: 14px 0 4px !important;
+    border-bottom: 0 !important;
+    text-align: left !important;
+}
+table.woocommerce-checkout-review-order-table tfoot tr.shipping td,
+table.woocommerce-checkout-review-order-table tfoot tr.woocommerce-shipping-totals td {
+    width: 100% !important;
+    flex: 0 0 auto !important;
+    padding: 0 0 14px !important;
+    text-align: left !important;
+}
+
+.checkout-order-review ul#shipping_method.woocommerce-shipping-methods {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 0 4px !important;
+    padding: 0 !important;
+    list-style: none !important;
+    text-align: left;
+}
+.checkout-order-review ul#shipping_method li {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start !important;
+    gap: 12px;
+    margin: 0 !important;
+    padding: 12px 14px !important;
+    background: var(--bg-input) !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-md) !important;
+    text-align: left !important;
+    cursor: pointer;
+    transition: border-color var(--t-fast), background var(--t-fast);
+}
+.checkout-order-review ul#shipping_method li:hover {
+    border-color: var(--c-accent-line) !important;
+}
+.checkout-order-review ul#shipping_method li:has(input:checked) {
+    border-color: var(--c-accent) !important;
+    background: var(--c-accent-tint) !important;
+}
+
+.checkout-order-review ul#shipping_method li input[type="radio"].shipping_method,
+.checkout-order-review ul#shipping_method li input.shipping_method {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    flex: 0 0 auto;
+    order: 0 !important;
+    position: relative !important;
+    top: 0 !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 1.5px solid var(--c-line-strong) !important;
+    border-radius: 50% !important;
+    accent-color: auto !important;
+    cursor: pointer;
+    transition: border-color var(--t-fast);
+}
+.checkout-order-review ul#shipping_method li input.shipping_method:hover {
+    border-color: var(--c-accent-soft) !important;
+}
+.checkout-order-review ul#shipping_method li input.shipping_method:checked {
+    border-color: var(--c-accent) !important;
+}
+.checkout-order-review ul#shipping_method li input.shipping_method:checked::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 9px !important;
+    height: 9px !important;
+    background: var(--c-accent) !important;
+    border-radius: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+.checkout-order-review ul#shipping_method li label {
+    flex: 1 1 auto;
+    order: 1 !important;
+    margin: 0 !important;
+    color: var(--c-text) !important;
+    font-family: var(--font-body) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.4;
+    text-align: left !important;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+}
+.checkout-order-review ul#shipping_method li:has(input:checked) label {
+    color: var(--c-text-strong) !important;
+}
+.checkout-order-review ul#shipping_method li label .woocommerce-Price-amount {
+    color: var(--c-accent-soft) !important;
+    font-weight: 600 !important;
+}
+
+
+/* ===========================================================
+   11. PAYMENT METHODS — selecteerbare rijen, icoon rechts
+   ===========================================================
+   li.wc_payment_method > input.input-radio + label(inline)
+   met img.mollie-gateway-icon (default float:right). Label op
+   flex zodat naam links / icoon rechts uitlijnt.
+   payment_box krijgt order:2 + flex-basis:100% → full-width
+   onder de rij.
+   =========================================================== */
+
+#payment {
+    margin-top: var(--gap-lg);
+    background: transparent !important;
+    border-radius: 0 !important;
+}
+
+#payment ul.payment_methods,
+#payment ul.payment_methods.methods {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 0 var(--gap-md) !important;
+    padding: 0 !important;
+    list-style: none !important;
+    background: transparent !important;
+    border: 0 !important;
+}
+
+#payment ul.payment_methods li.wc_payment_method {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin: 0 !important;
+    padding: 12px 14px !important;
+    background: var(--bg-input) !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-md) !important;
+    cursor: pointer;
+    transition: border-color var(--t-fast), background var(--t-fast);
+}
+#payment ul.payment_methods li.wc_payment_method:hover {
+    border-color: var(--c-accent-line) !important;
+}
+#payment ul.payment_methods li.wc_payment_method:has(input:checked) {
+    border-color: var(--c-accent) !important;
+    background: var(--c-accent-tint) !important;
+}
+
+#payment ul.payment_methods li input[type="radio"].input-radio,
+#payment ul.payment_methods li input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: 0 0 auto;
+    order: 0;
+    position: relative;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    margin: 0 !important;
+    background: transparent;
+    border: 1.5px solid var(--c-line-strong);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: border-color var(--t-fast);
+}
+#payment ul.payment_methods li input[type="radio"]:hover {
+    border-color: var(--c-accent-soft);
+}
+#payment ul.payment_methods li input[type="radio"]:checked {
+    border-color: var(--c-accent);
+}
+#payment ul.payment_methods li input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    background: var(--c-accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#payment ul.payment_methods li label {
+    order: 1;
+    flex: 1 1 auto;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: var(--c-text) !important;
+    font-family: var(--font-body) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    cursor: pointer;
+}
+#payment ul.payment_methods li.wc_payment_method:has(input:checked) > label {
+    color: var(--c-text-strong) !important;
+}
+#payment ul.payment_methods li label img.mollie-gateway-icon {
+    float: none !important;
+    width: auto !important;
+    height: 24px !important;
+    max-height: 24px !important;
+    max-width: 130px !important;
+    margin: 0 !important;
+    flex: 0 0 auto;
+}
+
+#payment ul.payment_methods li .payment_box {
+    order: 2;
+    flex: 1 0 100%;
+    width: 100%;
+    margin: 8px 0 0 !important;
+    padding: 12px 0 2px !important;
+    border-top: 1px solid var(--c-line);
+    background: transparent !important;
+    color: var(--c-text-muted) !important;
+    font-size: 12.5px !important;
+    line-height: 1.5;
+}
+#payment ul.payment_methods li .payment_box::before {
+    display: none !important;
+    content: none !important;
+}
+
+#payment .woocommerce-info {
+    display: block !important;
+    padding: 14px 18px !important;
+    margin: 0 !important;
+    background: var(--bg-input) !important;
+    border: 1px solid var(--c-low-line) !important;
+    border-left: 3px solid var(--c-low) !important;
+    border-radius: var(--r-md) !important;
+    box-shadow: none !important;
+    color: var(--c-text) !important;
+    font-family: var(--font-body) !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+}
+#payment .woocommerce-no-available-payment-methods-message {
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    color: inherit !important;
+}
+
+
+/* ===========================================================
+   12. TERMS CHECKBOX
+   ===========================================================
+   Live DOM = .woocommerce-terms-and-conditions-WRAPPER
+   (niet ...-wrap — die selector matcht 0 elementen).
+   =========================================================== */
+
+.woocommerce-terms-and-conditions-wrapper {
+    margin: var(--gap-md) 0 !important;
+    padding: 16px !important;
+    background: var(--bg-input) !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-md) !important;
+}
+.woocommerce-terms-and-conditions-wrapper:has(.woocommerce-invalid) {
+    border-color: var(--c-error) !important;
+    background: var(--c-error-tint, rgba(245,134,133,0.10)) !important;
+}
+
+.woocommerce-terms-and-conditions {
+    margin: 0 0 var(--gap-sm) !important;
+    padding: 14px !important;
+    background: var(--bg-input) !important;
+    border: 1px solid var(--c-line-strong) !important;
+    border-radius: var(--r-md) !important;
+    color: var(--c-text) !important;
+    font-size: 12px !important;
+    line-height: 1.6;
+}
+.woocommerce-terms-and-conditions a {
+    color: var(--c-accent) !important;
+}
+
+.woocommerce-terms-and-conditions-wrapper p.form-row {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.woocommerce-terms-and-conditions-wrapper label.checkbox {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0 !important;
+    color: var(--c-text) !important;
+    font-family: var(--font-body) !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.5;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    cursor: pointer;
+}
+
+.woocommerce-terms-and-conditions-wrapper input#terms {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    flex-shrink: 0;
+    position: relative !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 1px 0 0 !important;
+    background: var(--bg-input) !important;
+    border: 1.5px solid var(--c-line-strong) !important;
+    border-radius: 5px !important;
+    cursor: pointer;
+    transition: background var(--t-fast), border-color var(--t-fast);
+}
+.woocommerce-terms-and-conditions-wrapper input#terms:hover {
+    border-color: var(--c-accent-soft) !important;
+}
+.woocommerce-terms-and-conditions-wrapper input#terms:checked {
+    background: var(--c-accent) !important;
+    border-color: var(--c-accent) !important;
+}
+.woocommerce-terms-and-conditions-wrapper input#terms:checked::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 5px !important;
+    top: 1.5px !important;
+    width: 5px !important;
+    height: 9px !important;
+    border: solid #fff !important;
+    border-width: 0 2px 2px 0 !important;
+    transform: rotate(45deg) !important;
+}
+
+.woocommerce-terms-and-conditions-wrapper a,
+.woocommerce-terms-and-conditions-link {
+    color: var(--c-accent) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+.woocommerce-terms-and-conditions-wrapper a:hover,
+.woocommerce-terms-and-conditions-link:hover {
+    color: var(--c-accent-soft) !important;
+}
+
+
+/* ===========================================================
+   13. PLACE ORDER
+   =========================================================== */
+
+#payment .form-row.place-order {
+    margin: var(--gap-md) 0 0 !important;
+    padding: 0 !important;
+}
+#payment #place_order {
+    width: 100% !important;
+    height: 52px !important;
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+
+/* ===========================================================
+   14. PRIVACY POLICY TEXT
+   =========================================================== */
+
+.woocommerce-privacy-policy-text {
+    margin: 0 0 var(--gap-sm) !important;
+    color: var(--c-text-muted) !important;
+    font-size: 12px !important;
+    line-height: 1.6;
+}
+.woocommerce-privacy-policy-text a,
+.woocommerce-privacy-policy-text strong {
+    color: var(--c-text) !important;
+    font-weight: 600;
+}
+
+
+/* ===========================================================
+   15. ERROR STATE
+   ===========================================================
+   NoticeGroup is een grid-item; zonder grid-column:1/-1 pakt
+   'ie kolom 1, waardoor #customer_details naar kolom 2 schuift
+   en de order-kaart eronder valt.
+   =========================================================== */
+
+form.checkout .woocommerce-NoticeGroup,
+form.checkout .woocommerce-NoticeGroup-checkout,
+.woocommerce > .woocommerce-NoticeGroup {
+    grid-column: 1 / -1 !important;
+    margin: 0 0 var(--gap-md) !important;
+}
+
+.woocommerce-NoticeGroup .woocommerce-error {
+    margin: 0 !important;
+    padding: 14px 18px 14px 46px !important;
+}
+.woocommerce-NoticeGroup .woocommerce-error li {
+    margin: 0 0 4px !important;
+    padding: 0 !important;
+    line-height: 1.4 !important;
+}
+.woocommerce-NoticeGroup .woocommerce-error li:last-child {
+    margin-bottom: 0 !important;
+}
+.woocommerce-NoticeGroup .woocommerce-error li a {
+    color: var(--c-accent-soft) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+.woocommerce-NoticeGroup .woocommerce-error li a:hover {
+    color: var(--c-accent) !important;
+    text-decoration: underline !important;
+}
+
+form.checkout .form-row.woocommerce-invalid input.input-text,
+form.checkout .form-row.woocommerce-invalid select,
+form.checkout .form-row.woocommerce-invalid .select2-container .select2-selection {
+    border-color: var(--c-error) !important;
+}
+form.checkout .form-row.woocommerce-invalid input.input-text {
+    background: var(--c-error-tint, rgba(245,134,133,0.10)) !important;
+}
+
+p.checkout-inline-error-message {
+    margin: 6px 0 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    color: var(--c-error) !important;
+    font-family: var(--font-body) !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
+}
